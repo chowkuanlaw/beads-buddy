@@ -1,27 +1,30 @@
-# Bead Buddy · 算盘小达人 v2.0
+# Bead Buddy · 算盘小达人 (v3.0)
 
-A bilingual, interactive Soroban learning website for young children.
+**Website:** https://chowkuanlaw.github.io/beads-buddy/
 
-## Open the app
-https://chowkuanlaw.github.io/beads-buddy/
+A bilingual, animated Soroban learning app for children, hosted as a static GitHub Pages website.
 
-## Four learning levels
-1. **First Beads:** Simple addition and subtraction (0–9, direct moves).
-2. **5 & 10 Friends:** Small-friend 5 and big-friend 10 formulas; carrying and borrowing.
-3. **Bigger Numbers:** Two- and three-digit addition and subtraction, showing each rod.
-4. **Times & Sharing:** Beginner multiplication through repeated addition and exact division through repeated subtraction; the final answer is shown on the abacus. This is a conceptual introduction, not the advanced formal Soroban multiplication/division algorithm.
+## What's new in v3.0
 
-## Features
-- 25 HTML-rendered beads on five rods, even when JavaScript is disabled.
-- Animated step-by-step bead movements and displayed formulas.
-- English and Mandarin voice guidance (built-in browser/system speech synthesis).
-- Enter a custom question (+, −, × or ÷), select examples, or generate a new question.
-- Touch the beads in practice mode and earn stars for correctly solved questions.
-- Responsive for iPhone, iPad and desktop; no external APIs or analytics.
+- Compact mobile-first workspace keeps the math question, abacus, formula, step buttons, and answer checker together.
+- Unlimited on-demand random generation for four learning levels; select 2, 3, 4, 5, 8, 12, 20 or 30 numbers per generated question.
+- Enter custom chained expressions with up to 40 numbers, such as `8 + 5 - 3 + 12 - 7` or `8 + 3 × 4 - 5`.
+- Normal multiplication/division precedence, bilingual step narration, animated bead moves, a step-jump progress slider and autoplay.
+- Enter an answer to check it immediately, or switch to Try it to move the abacus beads yourself. Earn stars for correct answers.
 
-## GitHub Pages
-Deploy from **main / (root)**. Static `index.html` and `.nojekyll`; no build step.
+## Levels
 
-Supported inputs: non-negative addition/subtraction up to 9,999 operands; multiplication with operands 0–12; division of 0–144 with a divisor 1–12 and an integer quotient no higher than 12. No negative-number lessons or fractional division in this release.
+1. Direct addition and subtraction without 5/10 complements
+2. Small friends of 5 and big friends of 10 (carrying/borrowing)
+3. Two- and three-digit arithmetic
+4. Multiplication/division using repeated equal groups
 
-Voice playback depends on system-installed English/Chinese voices and generally needs a user interaction to begin on mobile.
+## Deployment
+
+GitHub Pages: Settings → Pages → Deploy from a branch → `main` → `/(root)`.
+
+Everything runs in a single `index.html`; no build step, backend, login or external libraries. English and Mandarin voice use the browser's built-in speech synthesis and installed voices.
+
+## Limits
+
+Five Soroban rods: whole numbers 0–99,999. Each intermediate running total must be nonnegative. Division must be exact. Multiplication/division lessons demonstrate up to 12 groups and are introductory, not advanced Soroban multiplication algorithms. Parentheses are not supported. Random questions are unlimited in repeated generation, not unlimited in difficulty.
