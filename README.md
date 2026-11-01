@@ -1,30 +1,25 @@
-# Bead Buddy · 算盘小达人 (v3.0)
+# Bead Buddy (v3.1)
 
-**Website:** https://chowkuanlaw.github.io/beads-buddy/
+Live site: https://chowkuanlaw.github.io/beads-buddy/
 
-A bilingual, animated Soroban learning app for children, hosted as a static GitHub Pages website.
+A bilingual English/Mandarin Soroban learning app for children.
 
-## What's new in v3.0
+## v3.1 design update
 
-- Compact mobile-first workspace keeps the math question, abacus, formula, step buttons, and answer checker together.
-- Unlimited on-demand random generation for four learning levels; select 2, 3, 4, 5, 8, 12, 20 or 30 numbers per generated question.
-- Enter custom chained expressions with up to 40 numbers, such as `8 + 5 - 3 + 12 - 7` or `8 + 3 × 4 - 5`.
-- Normal multiplication/division precedence, bilingual step narration, animated bead moves, a step-jump progress slider and autoplay.
-- Enter an answer to check it immediately, or switch to Try it to move the abacus beads yourself. Earn stars for correct answers.
+- No emoji in buttons, navigation, feedback, or scoring.
+- Neutral palette, restrained typography, clean spacing, and simple numbered learning levels.
+- Tabler Icons inline SVGs for New, Back, Next, Play, Pause, Hear and Check; no runtime icon dependency.
+- Mobile-friendly layout keeps the calculation, bead board, formula, controls and answer in one view.
+- Existing 25 animated beads, four levels, random question generation, up to 40 numbers in custom expressions, English/Mandarin narration and practice are preserved.
 
-## Levels
+## Open-source icons
 
-1. Direct addition and subtraction without 5/10 complements
-2. Small friends of 5 and big friends of 10 (carrying/borrowing)
-3. Two- and three-digit arithmetic
-4. Multiplication/division using repeated equal groups
+Inline action icons sourced from [Tabler Icons](https://github.com/tabler/tabler-icons), copyright (c) 2020–2026 Paweł Kuna, used under the MIT License. See [TABLER_ICONS_LICENSE.txt](./TABLER_ICONS_LICENSE.txt).
 
-## Deployment
+## Hosting
 
-GitHub Pages: Settings → Pages → Deploy from a branch → `main` → `/(root)`.
-
-Everything runs in a single `index.html`; no build step, backend, login or external libraries. English and Mandarin voice use the browser's built-in speech synthesis and installed voices.
+Deploy the repository root `index.html` through GitHub Pages, branch `main`, folder `/(root)`. No build step, CDN, login, or server required. Voice uses the browser's installed speech synthesis voices.
 
 ## Limits
 
-Five Soroban rods: whole numbers 0–99,999. Each intermediate running total must be nonnegative. Division must be exact. Multiplication/division lessons demonstrate up to 12 groups and are introductory, not advanced Soroban multiplication algorithms. Parentheses are not supported. Random questions are unlimited in repeated generation, not unlimited in difficulty.
+The five-rod Soroban represents whole numbers from 0–99,999, intermediate totals must be nonnegative, division must be exact, and multiplication/division equal-group demonstrations are limited to 12 groups. Parentheses are not yet supported.
