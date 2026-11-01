@@ -1,388 +1,320 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#fbf8f0">
-  <meta name="description" content="Bead Buddy: a visual bilingual Soroban abacus tutor for children.">
-  <title>Bead Buddy · 算盘小达人 · v2.0</title>
-  <style>
-    :root{--ink:#25344a;--muted:#69758a;--bg:#fbf8f0;--green:#117c79;--green2:#d9f6ef;--violet:#6448b8;--violet2:#eee9ff;--gold:#eebc63;--line:#e9e6e0;--paper:#fff;--red:#d35f56;--blue:#366cbd}
-    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--ink);background:radial-gradient(ellipse at 10% 2%,#fff0da 0,transparent 37%),radial-gradient(ellipse at 100% 14%,#e9f9f7 0,transparent 38%),var(--bg);font-family:ui-rounded,'SF Pro Rounded',-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,'PingFang SC','Microsoft YaHei',sans-serif;min-height:100vh}
-    button,input,select{font:inherit}button{cursor:pointer;touch-action:manipulation}button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #e1bb63;outline-offset:3px}.wrap{max-width:1100px;margin:auto;padding:28px 22px 52px}
-    .header{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:24px;flex-wrap:wrap}.brand{display:flex;align-items:center;gap:12px}.logo{width:51px;height:51px;display:grid;place-items:center;background:#ffe4ad;border:2px solid #efca8c;border-radius:16px;font-size:28px;box-shadow:0 4px 0 #e7cfaa}.brand-name{font-size:23px;font-weight:900;letter-spacing:-.8px}.brand-sub{font-size:12px;color:var(--muted);margin-top:2px}.header-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.seg{display:inline-flex;padding:4px;background:white;border:1px solid var(--line);border-radius:14px;gap:2px}.seg button{padding:10px 15px;border:0;border-radius:10px;background:transparent;color:var(--muted);font-weight:800}.seg button.selected{background:var(--green);color:white;box-shadow:0 2px 7px #127e7a24}.lang-toggle.selected{background:var(--violet)!important}.soundhead{border:1px solid var(--line);background:white;padding:10px 12px;border-radius:13px;font-weight:700;color:var(--ink)}
-    .hero{display:flex;align-items:center;justify-content:space-between;gap:22px;background:linear-gradient(110deg,#178e81 0%,#147972 60%,#2b6a88 100%);padding:26px 30px;border-radius:25px;color:#fff;overflow:hidden;position:relative;margin-bottom:20px;box-shadow:0 14px 30px #0a666a16}.hero:after{content:'✦  ✦    ✧';font-size:58px;position:absolute;right:26px;top:-16px;color:#ffffff36;transform:rotate(16deg)}.hero h1{margin:0;font-size:clamp(24px,3.3vw,36px);letter-spacing:-1px;line-height:1.2}.hero p{max-width:585px;margin:10px 0 0;line-height:1.5;color:#e1f7f3;font-size:14px}.hero-emoji{font-size:74px;line-height:1;filter:drop-shadow(0 7px 3px #0d55564d);position:relative;z-index:1}
-    .maincol{min-width:0}.layout{display:grid;grid-template-columns:minmax(0,1.53fr) minmax(280px,.9fr);gap:17px}.card{background:#fff;border:1px solid #ebe8e3;box-shadow:0 7px 22px #303b4310;border-radius:22px;overflow:hidden}.card-pad{padding:21px}.subhead{font-weight:900;font-size:17px;display:flex;align-items:center;gap:9px;margin-bottom:15px}.pill{background:#f4f1eb;font-size:11px;font-weight:800;padding:6px 9px;border-radius:9px;color:#756e5e}.fieldline{display:flex;gap:10px}.fieldline input{min-width:0;flex:1;border:2px solid #e8e7e2;background:#fffdf9;border-radius:13px;padding:13px 15px;font-size:20px;font-weight:900;letter-spacing:.7px;color:var(--ink)}.primary{border:0;border-radius:13px;background:var(--green);color:#fff;font-weight:900;padding:13px 19px;box-shadow:0 4px 0 #0c6464}.primary:active,.nav.primary:active{transform:translateY(2px);box-shadow:0 2px 0 #0c6464}.examples{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}.chip{border:1px solid #dbe8e2;background:#f2faf7;color:#176e69;padding:8px 11px;border-radius:11px;font-size:13px;font-weight:800}.chip:hover{background:#d9f4e9}.error{font-size:13px;color:#b83838;min-height:19px;margin:9px 0 0;font-weight:700}
-    .abacus-top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:15px 1px 14px;flex-wrap:wrap}.math-display{display:flex;align-items:center;gap:11px}.math-question{background:#f4f6f5;border-radius:11px;padding:9px 14px;font-size:18px;font-weight:900;white-space:nowrap}.math-answer{font-size:13px;color:var(--muted)}.current-value{font-size:38px;font-weight:950;color:var(--green);line-height:1;letter-spacing:-1.4px}.read-label{font-size:11px;color:var(--muted);font-weight:800;letter-spacing:.4px;margin-bottom:4px}.math-count{text-align:right}
-    .abacus-board{position:relative;overflow:hidden;border:9px solid #825339;border-bottom-width:13px;border-top-width:12px;border-radius:21px;background:linear-gradient(100deg,#fce9c5 0%,#f6dbaa 53%,#fbe6c0 100%);box-shadow:inset 0 0 0 2px #b47c4d,inset 0 10px 26px #8653221b,0 11px 18px #4f321421;min-height:401px;padding:0 10px;margin:0 1px 17px}.board-inner{position:relative;display:flex;align-items:stretch;justify-content:space-around;min-height:377px;max-width:650px;margin:auto}.beam{position:absolute;z-index:4;left:-10px;right:-10px;top:123px;height:16px;background:linear-gradient(#8f5a34,#673d24 56%,#95613b);box-shadow:0 2px 3px #45291955;border-top:2px solid #aa7a54;border-bottom:2px solid #593622;pointer-events:none}.rod{flex:1;position:relative;height:377px;min-width:0}.rod:before{content:'';position:absolute;top:12px;bottom:7px;width:7px;left:50%;transform:translateX(-50%);border-radius:5px;background:linear-gradient(90deg,#986038,#d2a063,#88542d);box-shadow:1px 0 1px #4b301245}.rod.current:after{content:'';position:absolute;inset:2px 5px 3px;border:2px dashed #23977f70;border-radius:13px;pointer-events:none}.rod-name{position:absolute;top:3px;left:0;right:0;text-align:center;color:#8d5f3f;font-size:11px;font-weight:900;z-index:2;letter-spacing:.4px}.bead{appearance:none;-webkit-appearance:none;padding:0;margin:0;display:block;position:absolute;left:50%;width:clamp(35px,8vw,60px);height:31px;transform:translateX(-50%);z-index:3;border-radius:50%;border:2px solid #9a4e20;background:radial-gradient(ellipse at 32% 21%,#ffd48e 1%,#eaa151 28%,#d27b3e 70%,#b96631 100%);box-shadow:inset 0 2px 2px #fff5,inset 0 -3px 4px #6e340a44,0 3px 2px #753d2080;transition:top .52s cubic-bezier(.18,.83,.24,1.13),background .25s,box-shadow .25s;touch-action:manipulation}.bead.on{background:radial-gradient(ellipse at 32% 21%,#ffe5ad 0%,#f6b967 27%,#ec9953 68%,#bd632c 100%)}.bead.moved{animation:beadGlow 1.08s ease-in-out 1;z-index:5;box-shadow:0 0 0 4px #fff3b7,0 0 0 8px #27a58b88,inset 0 2px 2px #fff8,0 5px 5px #53371a66}.bead:focus-visible{outline:3px solid #21b3a0;outline-offset:4px}.bead.upper.off{top:28px}.bead.upper.on{top:91px}.bead.lower{top:calc(205px + var(--i)*36px)}.bead.lower.on{top:calc(146px + var(--i)*36px)}.place-value{position:absolute;bottom:2px;left:0;right:0;text-align:center;color:#85552f;font-weight:900;font-size:13px}.bead-demo{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;color:var(--muted);font-size:12px;font-weight:700;margin-bottom:8px}.bead-demo b{color:var(--ink)}.bead-demo .dot{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--gold);margin-right:5px;border:1px solid #c17a35}
-    .progressline{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}.stepnum{font-weight:900;font-size:12px;color:var(--muted)}.bar{height:8px;border-radius:20px;background:#f1eee9;overflow:hidden;margin-bottom:16px}.barfill{height:100%;width:0;background:linear-gradient(90deg,#24a08b,#86d5b1);transition:width .4s}.explanation{background:#f3faf8;border:1px solid #d5eee5;border-radius:17px;padding:17px;min-height:180px}.explanation.small{background:#fff8ee;border-color:#f7e5c5}.explanation.big{background:#f5f0ff;border-color:#e6dbfc}.explanation .tag{display:inline-block;background:#dff1ec;color:#167c72;border-radius:8px;padding:6px 10px;font-size:12px;font-weight:900;margin-bottom:11px}.explanation.small .tag{background:#ffebc7;color:#a97020}.explanation.big .tag{background:#e9dfff;color:#6f4eae}.formula{font-size:clamp(23px,3vw,31px);font-weight:950;letter-spacing:-.4px;margin:1px 0 11px}.move{font-weight:850;line-height:1.55;font-size:15px}.why{color:var(--muted);font-size:13px;line-height:1.52;margin-top:9px}.guide-nav{display:flex;gap:9px;align-items:center;margin-top:15px;flex-wrap:wrap}.nav{padding:12px 15px;border:1px solid var(--line);border-radius:12px;background:#fff;font-weight:900;color:var(--ink);white-space:nowrap}.nav:disabled{opacity:.42;cursor:default}.nav.primary{border:0;margin-left:auto}.speaker{background:#fff8e8;color:#946221;border-color:#efd7ab}.playmode{background:#f2edff;color:#674daf;border-color:#e6dbff}.toggleline{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:12px;font-weight:750;color:var(--muted)}.toggleline input{accent-color:var(--green);width:17px;height:17px}.practice-status{background:#f6f0ff;border:1px solid #e7dbff;color:#5c4696;border-radius:12px;padding:11px;font-size:14px;font-weight:850;margin-top:13px;line-height:1.5;display:none}.practice-status.visible{display:block}.practice-actions{display:none;gap:8px;flex-wrap:wrap;margin-top:14px}.practice-actions.visible{display:flex}
-    .sidebar .card{margin-bottom:17px}.lesson-title{font-size:17px;font-weight:950;margin:0 0 14px}.lesson{display:flex;gap:11px;align-items:flex-start;padding:12px 0;border-top:1px solid #f0eee9}.lesson:first-of-type{border-top:0}.lesson-icon{flex:none;display:grid;place-items:center;background:#e8f7f2;width:38px;height:38px;border-radius:12px;font-size:18px}.lesson h4{margin:0 0 3px;font-size:13px;font-weight:900}.lesson p{font-size:12px;line-height:1.52;color:var(--muted);margin:0}.pairs{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:12px}.pair{border-radius:12px;background:#faf7f1;padding:9px;text-align:center;font-size:17px;font-weight:900}.pair span{display:block;font-size:10px;color:#927e64;margin-bottom:5px}.side-note{background:linear-gradient(120deg,#f4edff,#eef9ff);padding:16px;border-radius:15px;font-size:13px;line-height:1.55;color:#59547c}.side-note strong{display:block;color:#3d3769;margin-bottom:5px}.footer{font-size:11px;color:#8a8e99;line-height:1.6;text-align:center;margin-top:24px}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-
-    .levels-shell{padding:20px 21px 17px;background:#fff;border:1px solid #ebe8e3;border-radius:23px;box-shadow:0 7px 22px #303b4310;margin-bottom:18px}
-    .levels-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}
-    .levels-eyebrow{font-size:10px;letter-spacing:1.3px;font-weight:900;color:var(--green);margin-bottom:4px}.levels-head h2{font-size:18px;margin:0;font-weight:950}
-    .star-count{background:#fff2d5;color:#946218;padding:8px 14px;border-radius:99px;border:1px solid #f6dfb0;white-space:nowrap;font-weight:950}
-    .level-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px}
-    .level-card{position:relative;display:flex;flex-direction:column;align-items:flex-start;text-align:left;gap:4px;min-height:139px;border-radius:16px;padding:13px 13px 12px;border:2px solid #e8eee9;background:#fafcf9;box-shadow:0 3px 0 #e9ede8;color:var(--ink);transition:transform .15s,border-color .15s,background .15s}
-    .level-card.selected{background:#eaf9f5;border-color:#179585;box-shadow:0 4px 0 #bae7db}.level-card.selected:after{content:'✓';position:absolute;right:12px;top:11px;color:var(--green);font-weight:950}
-    .level-card:active{transform:translateY(2px)}.level-emoji{font-size:25px;line-height:1.2;margin-bottom:4px}.level-number{font-size:10px;letter-spacing:.7px;color:#647987;font-weight:950}.level-name{font-size:14px;font-weight:950}.level-detail{font-size:11px;color:var(--muted);line-height:1.35}
-    .level-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:13px;font-size:13px;color:#5a6877;line-height:1.45}.level-toolbar .surprise{border-color:#ead8ff;background:#f5efff;color:#6d4caf;flex-shrink:0}
-    @media(max-width:680px){.level-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.level-card{min-height:123px;padding:10px 12px}.levels-shell{padding:15px 13px 12px}.level-toolbar{align-items:flex-start}.levels-head h2{font-size:17px}}
-    @media(max-width:370px){.level-toolbar{flex-wrap:wrap}.level-toolbar .surprise{width:100%}}
-    @keyframes beadGlow{0%,100%{filter:brightness(1)}40%{filter:brightness(1.18)}}
-    @media(max-width:860px){.layout{grid-template-columns:1fr}.sidebar{display:grid;grid-template-columns:1fr 1fr;gap:14px}.sidebar .card{margin:0}.hero-emoji{font-size:56px}}
-    @media(max-width:570px){.wrap{padding:15px 12px 34px}.hero{padding:18px 17px;border-radius:18px}.hero h1{font-size:23px}.hero p{font-size:12px}.hero-emoji{font-size:40px}.brand-name{font-size:20px}.header{margin-bottom:14px}.card-pad{padding:16px}.fieldline input{font-size:18px;padding:11px}.primary{padding:11px 13px}.abacus-board{padding:0 1px;border-width:7px;border-bottom-width:10px}.board-inner{min-height:377px}.bead{width:clamp(31px,10vw,47px);height:27px}.beam{left:-4px;right:-4px}.rod-name{font-size:10px}.sidebar{grid-template-columns:1fr}.math-question{font-size:16px}.current-value{font-size:32px}.nav{padding:11px 12px}.explanation{min-height:168px}.header-actions{width:100%;justify-content:space-between}.bead-demo{gap:12px}}
-    @media(prefers-reduced-motion:reduce){.bead,.barfill{transition:none}.bead.moved{animation:none}}
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f7faf9">
+<meta name="description" content="Learn Soroban arithmetic with animated beads, unlimited questions, and English/Mandarin voice lessons.">
+<title>Bead Buddy · 算盘小达人 · v3.0</title>
+<style>
+:root{--ink:#203748;--muted:#637787;--teal:#087e76;--teal-lt:#e9f8f4;--paper:#fff;--bg:#f5f9f8;--line:#e1e9e8;--purple:#7358b4;--gold:#ffdf8f;--border:rgba(27,65,68,.13)}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:ui-rounded,'SF Pro Rounded',-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,'PingFang SC',sans-serif}button,input,select{font:inherit}button{cursor:pointer;touch-action:manipulation}button:disabled{opacity:.45;cursor:default}button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #cda144;outline-offset:2px}
+#app{max-width:1320px;margin:auto;min-height:100svh;padding:12px 16px 16px;display:flex;flex-direction:column;gap:10px}.topbar{display:flex;justify-content:space-between;align-items:center;gap:10px;min-height:47px}.brand{font-size:20px;font-weight:950;white-space:nowrap;letter-spacing:-.7px;display:flex;align-items:center;gap:9px}.brand .logomark{background:#fee6b6;display:grid;place-items:center;width:37px;height:37px;border-radius:12px;font-size:24px}.brand small{font-weight:800;font-size:10px;color:var(--muted);display:block;letter-spacing:.1px}.topactions{display:flex;align-items:center;gap:6px}.stars{font-size:13px;font-weight:900;white-space:nowrap;padding:8px 11px;background:#fff8dc;border-radius:10px}.lang{border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:white;font-weight:850;color:var(--muted)}.lang.selected{background:var(--teal);color:white;border-color:var(--teal)}
+.levels{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}.level{border:1px solid var(--line);border-radius:12px;padding:9px 10px;background:white;display:flex;align-items:center;gap:7px;text-align:left;min-width:0;color:var(--ink)}.level.active{border-color:#0e958c;background:var(--teal-lt);box-shadow:inset 0 0 0 1px #0e958c}.level .em{font-size:19px}.level b{font-size:12px;display:block}.level small{font-size:11px;color:var(--muted);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.workspace{background:var(--paper);border:1px solid var(--border);border-radius:20px;box-shadow:0 7px 36px #2042470a;padding:12px;flex:1;min-height:0;display:flex;flex-direction:column;gap:10px}.question-row{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:8px;align-items:end}.input-wrap{display:block;min-width:0}.label{font-size:11px;font-weight:900;color:var(--muted);display:block;margin-bottom:5px;letter-spacing:.2px}.question-input{border:2px solid #dce8e5;border-radius:11px;background:#fbfdfc;color:#203748;width:100%;height:43px;padding:6px 12px;font-size:19px;font-weight:900;letter-spacing:.1px;outline:none}.question-input:focus{border-color:#16a393}.action{border:0;border-radius:11px;padding:10px 14px;min-height:43px;font-size:13px;font-weight:900;white-space:nowrap;background:#eef4f3;color:var(--ink)}.action.primary{background:var(--teal);color:white}.action.secondary{background:#eee8ff;color:#60419f}.action.gold{background:#fff0c7;color:#81521c}.action:active:not(:disabled){transform:translateY(1px)}.random-controls{display:flex;align-items:center;gap:7px;justify-content:space-between;flex-wrap:wrap;min-height:29px}.random-controls .hint{font-size:11px;color:var(--muted);font-weight:750}.terms{display:flex;gap:5px;align-items:center;font-size:12px;color:var(--muted);font-weight:850}.terms select{border:1px solid var(--line);border-radius:9px;padding:5px 8px;background:#fafcfc;color:var(--ink);font-weight:900;min-height:30px}#error{color:#c23939;font-size:12px;font-weight:800;min-height:0}#error:empty{display:none}
+.lesson{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(295px,.78fr);gap:12px;min-height:0;flex:1}.visual{background:linear-gradient(175deg,#f9fcfb,#eff8f5);border:1px solid #e1eee9;border-radius:15px;padding:9px 12px;min-width:0;display:flex;flex-direction:column;gap:7px}.visualhead{display:flex;align-items:center;gap:12px;justify-content:space-between;min-width:0}.expression{font-size:clamp(13px,1.6vw,20px);font-weight:950;color:#2e515c;max-width:65%;white-space:nowrap;overflow:auto;scrollbar-width:thin}.current-read{white-space:nowrap;font-size:12px;font-weight:850;color:var(--muted)}.current-read strong{font-size:26px;color:var(--teal);margin-left:7px;font-variant-numeric:tabular-nums}
+.abacus{height:min(47svh,440px);min-height:230px;border:7px solid #89603e;border-bottom-width:10px;border-radius:17px;background:linear-gradient(110deg,#ffedc9,#f3d59f,#fae9c7);box-shadow:inset 0 0 0 2px #be9562,0 6px 18px #4d352218;overflow:hidden;padding:0 9px;position:relative}.abacus-inner{position:relative;display:flex;justify-content:space-around;height:100%;max-width:700px;margin:auto}.beam{position:absolute;z-index:4;top:34%;left:-9px;right:-9px;height:11px;background:linear-gradient(#9c6d45,#704729,#9e6c3e);box-shadow:0 2px 3px #57351966;pointer-events:none}.rod{position:relative;flex:1;min-width:0;height:100%}.rod:before{content:'';position:absolute;top:5%;bottom:7%;left:50%;width:6px;transform:translateX(-50%);border-radius:4px;background:linear-gradient(90deg,#996035,#d7a878,#92613b)}.rod.focus:after{content:'';position:absolute;inset:5px;border:2px dashed #19a79588;border-radius:10px;pointer-events:none}.rod-label{position:absolute;top:1.5%;left:0;right:0;text-align:center;font-size:11px;color:#855d3b;font-weight:950}.digit{position:absolute;bottom:1%;left:0;right:0;text-align:center;font-weight:900;font-size:13px;color:#855d3b}.bead{appearance:none;position:absolute;left:50%;transform:translateX(-50%);padding:0;width:min(9vw,72px);max-width:72px;min-width:28px;height:8.5%;min-height:16px;border:2px solid #9c542c;border-radius:50%;background:radial-gradient(ellipse at 29% 20%,#ffe5b4,#f7ba72 30%,#db8349 75%,#af582c);box-shadow:inset 0 2px 3px #fff8,inset 0 -3px 3px #783f2444,0 2px 2px #8b4e3280;z-index:3;transition:top .37s cubic-bezier(.25,.9,.22,1.08),box-shadow .3s}.bead.upper.off{top:9%}.bead.upper.on{top:24.6%}.bead.lower.on{top:calc(38.6% + var(--i)*9%)}.bead.lower:not(.on){top:calc(54% + var(--i)*9%)}.bead.moved{box-shadow:0 0 0 4px #ffe995,0 0 0 7px #29b09c88,0 2px 3px #734126a0;z-index:5}.bead:focus-visible{outline:3px solid #159f91;outline-offset:3px}.bead-instruction{font-size:11px;color:var(--muted);text-align:center;font-weight:750}
+.tutor{display:flex;flex-direction:column;min-width:0;gap:9px}.progress-meta{display:flex;justify-content:space-between;align-items:center;gap:6px;color:var(--muted);font-size:12px;font-weight:850}.progress{background:#edf2f0;height:7px;border-radius:9px;overflow:hidden}.progress>div{height:100%;background:#22a390;width:0;transition:width .2s}.progress{position:relative}.progress input[type=range]{position:absolute;inset:-9px 0 0;width:100%;height:24px;cursor:pointer;opacity:0;margin:0;touch-action:pan-x}.explain{background:#f4faf8;border:1px solid #dbeee8;border-radius:14px;padding:14px;flex:1;min-height:146px;display:flex;flex-direction:column;gap:8px;overflow:auto}.explain.small{background:#fff9ed;border-color:#f3e2b7}.explain.big{background:#f5f2ff;border-color:#e5dbfc}.tag{font-size:11px;color:#137970;background:#d8f1ea;border-radius:8px;padding:6px 9px;font-weight:900;width:max-content;max-width:100%}.explain.small .tag{background:#f7e4b8;color:#91621e}.explain.big .tag{background:#e9dffd;color:#6b4aa8}.formula{font-size:clamp(19px,2.1vw,32px);font-weight:950;line-height:1.2;overflow-wrap:anywhere}.movement{font-size:14px;font-weight:750;line-height:1.42}.why{font-size:12px;color:#667b87;line-height:1.45}.guide-controls{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:7px}.guide-controls .action{min-width:0;padding:9px 3px}.mode-row{display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap}.mode-row .seg{display:flex;gap:2px;background:#f3f6f5;border-radius:10px;padding:3px}.mode-row .seg button{border:0;border-radius:8px;padding:7px 11px;font-size:12px;font-weight:900;color:#67818b;background:transparent}.mode-row .seg button.active{background:white;color:var(--teal);box-shadow:0 1px 5px #5674a426}.voice-options{display:flex;gap:9px;align-items:center;white-space:nowrap;font-size:11px;color:var(--muted);font-weight:800}.voice-options input{accent-color:var(--teal)}
+.practice-panel{display:flex;flex-direction:column;gap:6px}.practice-row{display:flex;gap:7px;align-items:center}.practice-row input{flex:1;min-width:0;min-height:43px;border:2px solid #e0e9e6;border-radius:11px;padding:8px 12px;font-size:19px;font-weight:900;background:white;color:#203748}.practice-row .action{padding-left:11px;padding-right:11px}.feedback{font-size:13px;font-weight:850;min-height:20px;color:#18756c;line-height:1.3}.feedback.bad{color:#c14444}.tip{color:var(--muted);font-size:11px;line-height:1.35}details.advanced{font-size:11px;color:var(--muted);padding:0 3px}details.advanced summary{cursor:pointer;font-weight:850}details.advanced p{margin:6px 0;line-height:1.5}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media (max-width:900px){#app{padding:9px 9px 12px;gap:7px}.workspace{padding:9px;gap:7px}.lesson{grid-template-columns:1fr;gap:7px;flex:initial}.visual{padding:6px 8px;gap:4px}.abacus{height:clamp(210px,32svh,315px);min-height:0;border-width:5px;border-bottom-width:8px}.tutor{gap:6px}.explain{min-height:0;padding:9px 12px;gap:3px;max-height:116px}.formula{font-size:23px}.movement{font-size:12px}.why{font-size:11px}.level{padding:6px 7px}.level .em{font-size:16px}.level b{font-size:11px}.level small{display:none}.level{justify-content:center}.visualhead{min-height:31px}.current-read strong{font-size:22px}.guide-controls .action{min-height:41px}.brand{font-size:17px}.brand .logomark{width:32px;height:32px;font-size:20px}.stars{padding:7px}.question-input{font-size:17px;height:41px}.action{min-height:41px}.practice-row input{min-height:40px}}
+@media(max-width:490px){.brand small{display:none}.lang{padding:7px 9px;font-size:12px}.stars{font-size:12px}.level .em{font-size:15px}.level b{font-size:10px}.level{gap:3px}.question-row{grid-template-columns:minmax(0,1fr) auto auto;gap:5px}.question-row .action{padding:8px 10px}.label{font-size:10px}.random-controls .hint{display:none}.abacus{height:clamp(195px,31svh,265px)}.bead{width:clamp(29px,10vw,46px)}.bead-instruction{font-size:10px}.movement{line-height:1.23}.why{line-height:1.27}.explain{max-height:105px}.workspace{border-radius:15px}.guide-controls{gap:5px}.guide-controls .action{font-size:12px}.practice-row .action{padding:7px 10px}.practice-row .action:last-child{font-size:12px}.tip{display:none}}
+@media(max-width:390px){.level .em{display:none}.brand{font-size:16px}.topactions{gap:3px}.lang{padding:6px 7px}.question-row .action{font-size:12px;padding:8px}.abacus{height:29svh}.formula{font-size:20px}.explain{max-height:94px}}
+@media(max-height:760px) and (max-width:900px){#app{gap:5px;padding-top:6px}.topbar{min-height:39px}.levels{gap:4px}.workspace{gap:5px;padding:7px}.random-controls{min-height:24px}.terms select{min-height:26px;padding:3px 6px}.abacus{height:clamp(170px,28svh,224px)}.explain{max-height:92px}.visual{gap:3px}.tutor{gap:4px}.guide-controls .action{min-height:36px}.practice-row input{min-height:36px}.practice-row .action{min-height:36px}.question-input,.question-row .action{height:38px;min-height:38px}.mode-row .seg button{padding:5px 8px}}
+@media(max-width:900px) and (max-height:700px){.abacus{height:clamp(146px,23svh,164px)}.explain{max-height:70px;padding:7px 10px;gap:2px}.explain .why{display:none}.formula{font-size:19px}.movement{font-size:11px;line-height:1.16}.tag{padding:3px 7px;font-size:10px}.bead-instruction{font-size:9px}.workspace{gap:4px}.visual{gap:2px;padding:5px 7px}.topbar{min-height:32px}.brand .logomark{height:29px;width:29px}.level{padding:4px 6px}.question-row .action,.question-input{height:35px;min-height:35px}.label{margin-bottom:2px}.terms select{min-height:23px}.random-controls{min-height:20px}.guide-controls .action{min-height:33px;padding:6px 2px}.practice-row input,.practice-row .action{min-height:33px;height:33px}.mode-row .seg button{padding:3px 8px}.progress-meta{font-size:11px}.feedback:empty{min-height:0}details.advanced{display:none}}
+@media(prefers-reduced-motion:reduce){.bead,.progress>div{transition:none!important}}
+</style>
 </head>
 <body>
-<main class="wrap">
-  <header class="header">
-    <div class="brand"><div class="logo" aria-hidden="true">🧮</div><div><div class="brand-name">Bead Buddy <span style="color:#158a80">✦</span></div><div class="brand-sub" data-i18n="brandSub">算盘小达人 · Little math adventures</div></div></div>
-    <div class="header-actions"><div class="seg" role="group" aria-label="Lesson language"><button type="button" id="langEn" class="lang-toggle selected" aria-pressed="true">English</button><button type="button" id="langZh" class="lang-toggle" aria-pressed="false">中文</button></div><button type="button" class="soundhead" id="voiceBtn">🔊 <span data-i18n="voice">Hear step</span></button></div>
-  </header>
-  <section class="hero"><div><h1 data-i18n="heroTitle">Little beads, big ideas! ✨</h1><p data-i18n="heroSub">Type a maths question. Watch the beads move, discover the helper formula, and listen to every step.</p></div><div class="hero-emoji" aria-hidden="true">🌟</div></section>
-  <section class="levels-shell" aria-label="Learning levels">
-    <div class="levels-head"><div><div class="levels-eyebrow" data-i18n="levelsEyebrow">YOUR LEARNING PATH</div><h2 data-i18n="levelsTitle">Four little adventures 🧮</h2></div><div class="star-count" id="starCount" aria-live="polite">⭐ 0</div></div>
-    <div class="level-grid" id="levelGrid" role="group" aria-label="Choose a learning level">
-      <button type="button" class="level-card selected" data-level="1" aria-pressed="true"><span class="level-emoji">🌱</span><span class="level-number">LEVEL 1</span><strong class="level-name">First beads</strong><small class="level-detail">Easy + and −</small></button>
-      <button type="button" class="level-card" data-level="2" aria-pressed="false"><span class="level-emoji">🧩</span><span class="level-number">LEVEL 2</span><strong class="level-name">5 & 10 friends</strong><small class="level-detail">Carry and borrow</small></button>
-      <button type="button" class="level-card" data-level="3" aria-pressed="false"><span class="level-emoji">🚀</span><span class="level-number">LEVEL 3</span><strong class="level-name">Bigger numbers</strong><small class="level-detail">Tens and hundreds</small></button>
-      <button type="button" class="level-card" data-level="4" aria-pressed="false"><span class="level-emoji">🌟</span><span class="level-number">LEVEL 4</span><strong class="level-name">Times & sharing</strong><small class="level-detail">Multiply and divide</small></button>
-    </div>
-    <div class="level-toolbar"><span id="levelDescription">Start with simple moves and small numbers.</span><button id="surpriseBtn" type="button" class="nav surprise">🎲 <span data-i18n="surprise">New question</span></button></div>
-  </section>
-  <div class="layout">
-    <div class="maincol">
-      <section class="card card-pad" aria-label="Question and abacus">
-        <div class="subhead">✏️ <span data-i18n="questionLabel">Your maths question</span> <span class="pill" data-i18n="addSub">+ and −</span></div>
-        <form id="mathForm" autocomplete="off"><div class="fieldline"><label class="sr-only" for="question">Maths question</label><input id="question" type="text" value="4 + 3" placeholder="e.g. 8 + 5" inputmode="text" maxlength="24" aria-describedby="error"><button type="submit" class="primary" data-i18n="showMe">Show me →</button></div></form>
-        <div id="error" class="error" aria-live="polite"></div>
-        <div class="examples" id="examples" role="group" aria-label="Example questions"><button class="chip" data-example="2 + 1" type="button">2 + 1 · Easy</button><button class="chip" data-example="4 + 3" type="button">4 + 3 · 5</button><button class="chip" data-example="8 + 5" type="button">8 + 5 · 10</button><button class="chip" data-example="13 - 7" type="button">13 − 7</button><button class="chip" data-example="27 + 45" type="button">27 + 45</button><button class="chip" data-example="100 - 8" type="button">100 − 8</button></div>
-        <div class="abacus-top"><div class="math-display"><div class="math-question" id="mathQuestion">4 + 3 = ?</div><div class="math-answer" id="answerHint" data-i18n="watch">Watch the beads!</div></div><div class="math-count"><div class="read-label" data-i18n="abacusShows">ABACUS SHOWS</div><div class="current-value" id="currentValue" aria-live="polite">4</div></div></div>
-        <div class="abacus-board" id="abacusBoard" aria-label="Animated five-column soroban abacus"><div class="board-inner" id="boardInner"><div class="beam"></div><div class="rod" data-place="4"><div class="rod-name" data-place-name="4">10k</div><button type="button" class="bead upper off" data-bead="upper" aria-pressed="false" aria-label="Top bead in 10k column"></button><button type="button" class="bead lower" style="--i:0" data-bead="lower" data-lower="0" aria-pressed="false" aria-label="Lower bead 1 in 10k column"></button><button type="button" class="bead lower" style="--i:1" data-bead="lower" data-lower="1" aria-pressed="false" aria-label="Lower bead 2 in 10k column"></button><button type="button" class="bead lower" style="--i:2" data-bead="lower" data-lower="2" aria-pressed="false" aria-label="Lower bead 3 in 10k column"></button><button type="button" class="bead lower" style="--i:3" data-bead="lower" data-lower="3" aria-pressed="false" aria-label="Lower bead 4 in 10k column"></button><div class="place-value">0</div></div><div class="rod" data-place="3"><div class="rod-name" data-place-name="3">1k</div><button type="button" class="bead upper off" data-bead="upper" aria-pressed="false" aria-label="Top bead in 1k column"></button><button type="button" class="bead lower" style="--i:0" data-bead="lower" data-lower="0" aria-pressed="false" aria-label="Lower bead 1 in 1k column"></button><button type="button" class="bead lower" style="--i:1" data-bead="lower" data-lower="1" aria-pressed="false" aria-label="Lower bead 2 in 1k column"></button><button type="button" class="bead lower" style="--i:2" data-bead="lower" data-lower="2" aria-pressed="false" aria-label="Lower bead 3 in 1k column"></button><button type="button" class="bead lower" style="--i:3" data-bead="lower" data-lower="3" aria-pressed="false" aria-label="Lower bead 4 in 1k column"></button><div class="place-value">0</div></div><div class="rod" data-place="2"><div class="rod-name" data-place-name="2">100</div><button type="button" class="bead upper off" data-bead="upper" aria-pressed="false" aria-label="Top bead in 100 column"></button><button type="button" class="bead lower" style="--i:0" data-bead="lower" data-lower="0" aria-pressed="false" aria-label="Lower bead 1 in 100 column"></button><button type="button" class="bead lower" style="--i:1" data-bead="lower" data-lower="1" aria-pressed="false" aria-label="Lower bead 2 in 100 column"></button><button type="button" class="bead lower" style="--i:2" data-bead="lower" data-lower="2" aria-pressed="false" aria-label="Lower bead 3 in 100 column"></button><button type="button" class="bead lower" style="--i:3" data-bead="lower" data-lower="3" aria-pressed="false" aria-label="Lower bead 4 in 100 column"></button><div class="place-value">0</div></div><div class="rod" data-place="1"><div class="rod-name" data-place-name="1">10</div><button type="button" class="bead upper off" data-bead="upper" aria-pressed="false" aria-label="Top bead in 10 column"></button><button type="button" class="bead lower" style="--i:0" data-bead="lower" data-lower="0" aria-pressed="false" aria-label="Lower bead 1 in 10 column"></button><button type="button" class="bead lower" style="--i:1" data-bead="lower" data-lower="1" aria-pressed="false" aria-label="Lower bead 2 in 10 column"></button><button type="button" class="bead lower" style="--i:2" data-bead="lower" data-lower="2" aria-pressed="false" aria-label="Lower bead 3 in 10 column"></button><button type="button" class="bead lower" style="--i:3" data-bead="lower" data-lower="3" aria-pressed="false" aria-label="Lower bead 4 in 10 column"></button><div class="place-value">0</div></div><div class="rod" data-place="0"><div class="rod-name" data-place-name="0">1</div><button type="button" class="bead upper off" data-bead="upper" aria-pressed="false" aria-label="Top bead in 1 column"></button><button type="button" class="bead lower on" style="--i:0" data-bead="lower" data-lower="0" aria-pressed="true" aria-label="Lower bead 1 in 1 column"></button><button type="button" class="bead lower on" style="--i:1" data-bead="lower" data-lower="1" aria-pressed="true" aria-label="Lower bead 2 in 1 column"></button><button type="button" class="bead lower on" style="--i:2" data-bead="lower" data-lower="2" aria-pressed="true" aria-label="Lower bead 3 in 1 column"></button><button type="button" class="bead lower on" style="--i:3" data-bead="lower" data-lower="3" aria-pressed="true" aria-label="Lower bead 4 in 1 column"></button><div class="place-value">4</div></div></div></div>
-        <noscript><p style="padding:12px;background:#fff3d4;border-radius:12px;color:#774d16;font-weight:700">The beads are visible, but interactive lessons need JavaScript. Open this HTML file in Safari or Chrome instead of the document preview. / 珠子可以显示，但互动教学需要在 Safari 或 Chrome 打开本网页。</p></noscript>
-        <div class="bead-demo"><span><i class="dot"></i><b data-i18n="topBead">Top bead = 5</b></span><span><i class="dot"></i><b data-i18n="bottomBead">Bottom bead = 1</b></span><span data-i18n="touchBeam">Touching the bar counts!</span></div>
-        <div class="progressline"><span class="stepnum" id="stepCounter">Step 0 of 2</span><span class="stepnum" id="kindLabel">Learning together 🌈</span></div><div class="bar"><div class="barfill" id="progressBar"></div></div>
-        <section class="explanation" id="explanation" aria-live="polite"><span class="tag" id="formulaTag">Let's begin</span><div class="formula" id="formula">4 + 3</div><div class="move" id="moveDescription">First, show 4 on the abacus.</div><div class="why" id="whyDescription">The upper bead is 5. Each lower bead is 1.</div></section>
-        <div class="guide-nav" id="guideNav"><button id="prevBtn" class="nav" type="button" disabled>← Back</button><button id="replayBtn" class="nav speaker" type="button">↻ Replay</button><button id="practiceBtn" class="nav playmode" type="button">🎯 Try it</button><button id="nextBtn" class="nav primary" type="button">Next step →</button></div>
-        <div class="toggleline"><input type="checkbox" id="autoVoice" checked><label for="autoVoice" data-i18n="autoVoice">Read each new step aloud</label></div>
-        <div id="practiceStatus" class="practice-status" aria-live="polite"></div>
-        <div id="practiceActions" class="practice-actions"><button id="checkBtn" type="button" class="primary">✓ Check my answer</button><button id="resetPracticeBtn" type="button" class="nav">↻ Reset beads</button><button id="backGuideBtn" type="button" class="nav">← Guided lesson</button></div>
-      </section>
-    </div>
-    <aside class="sidebar">
-      <section class="card card-pad"><h2 class="lesson-title" data-i18n="learnTitle">🌱 How bead maths works</h2><div class="lesson"><div class="lesson-icon">🖐️</div><div><h4 data-i18n="learnOneTitle">1. Move the beads</h4><p data-i18n="learnOneDesc">Beads touching the middle bar are active. Watch the ones, tens and hundreds columns.</p></div></div><div class="lesson"><div class="lesson-icon" style="background:#fff0d8">🧡</div><div><h4 data-i18n="learnFiveTitle">2. Small friends of 5 · 小朋友</h4><p data-i18n="learnFiveDesc">When you can't move enough small beads, use 5 and its little helper.</p></div></div><div class="lesson"><div class="lesson-icon" style="background:#eee7ff">💜</div><div><h4 data-i18n="learnTenTitle">3. Big friends of 10 · 大朋友</h4><p data-i18n="learnTenDesc">When a column is full, carry or borrow with a friend of 10.</p></div></div><div class="pairs"><div class="pair"><span data-i18n="fiveFriends">FRIENDS OF 5</span>1 + 4<br>2 + 3</div><div class="pair"><span data-i18n="tenFriends">FRIENDS OF 10</span>1 + 9<br>2 + 8<br>3 + 7<br>4 + 6<br>5 + 5</div></div></section>
-      <section class="card card-pad"><div class="side-note"><strong data-i18n="parentTitle">💡 A note for grown-ups</strong><span data-i18n="parentNote">For age 5, begin with 0–9, one rod, and direct moves. Practise five minutes at a time. Introduce 5-friends first, then 10-friends. Voice playback uses your device's built-in English or Mandarin voice.</span></div></section>
-    </aside>
+<main id="app">
+ <header class="topbar">
+  <div class="brand"><span class="logomark">🧮</span><span>Bead Buddy <small>算盘小达人 · <span id="version">v3.0</span></small></span></div>
+  <div class="topactions"><span class="stars" id="stars">⭐ 0</span><button class="lang selected" id="langEn" type="button" aria-pressed="true">EN</button><button class="lang" id="langZh" type="button" aria-pressed="false">中文</button></div>
+ </header>
+ <nav class="levels" aria-label="Learning levels">
+  <button class="level active" data-level="1" type="button"><span class="em">🌱</span><span><b>Level 1</b><small>Direct moves</small></span></button>
+  <button class="level" data-level="2" type="button"><span class="em">🧩</span><span><b>Level 2</b><small>5 & 10 friends</small></span></button>
+  <button class="level" data-level="3" type="button"><span class="em">🚀</span><span><b>Level 3</b><small>Big numbers</small></span></button>
+  <button class="level" data-level="4" type="button"><span class="em">🌟</span><span><b>Level 4</b><small>Multiply / divide</small></span></button>
+ </nav>
+ <section class="workspace" aria-label="Abacus calculator">
+  <form id="mathForm" class="question-row" autocomplete="off">
+   <label class="input-wrap"><span class="label" id="questionLabel">Math question · add as many terms as you like</span><input class="question-input" id="question" value="8 + 5 − 3 + 12 − 7" maxlength="360" spellcheck="false" aria-label="Math expression" placeholder="8 + 5 − 3 + 12 − 7"></label>
+   <button class="action primary" type="submit" id="solveBtn">Show</button><button class="action gold" id="randomBtn" type="button">🎲 New</button>
+  </form>
+  <div class="random-controls"><span class="hint" id="randHint">Random questions are always new, not a fixed list.</span><label class="terms"><span id="termsLabel">Numbers per question</span><select id="termCount" aria-label="Number of operands"><option>2</option><option>3</option><option selected>4</option><option>5</option><option>8</option><option>12</option><option>20</option><option>30</option></select></label></div>
+  <div id="error" role="alert"></div>
+  <div class="lesson">
+   <div class="visual">
+    <div class="visualhead"><div class="expression" id="expression" title="Full expression">8 + 5 − 3 + 12 − 7</div><div class="current-read"><span id="showsLabel">BEADS SHOW</span> <strong id="currentValue">8</strong></div></div>
+    <div class="abacus" id="abacus"><div class="abacus-inner" id="abacusInner"><div class="beam"></div><div class="rod" data-place="4"><div class="rod-label">10k</div><button type="button" class="bead upper off" data-bead="upper" aria-label="Upper 5-bead in 10k" aria-pressed="false"></button><button type="button" class="bead lower" data-bead="lower" data-lower="0" style="--i:0" aria-label="Lower bead 1 in 10k" aria-pressed="false"></button><button type="button" class="bead lower" data-bead="lower" data-lower="1" style="--i:1" aria-label="Lower bead 2 in 10k" aria-pressed="false"></button><button type="button" class="bead lower" data-bead="lower" data-lower="2" style="--i:2" aria-label="Lower bead 3 in 10k" aria-pressed="false"></button><button type="button" class="bead lower" data-bead="lower" data-lower="3" style="--i:3" aria-label="Lower bead 4 in 10k" aria-pressed="false"></button><div class="digit">0</div></div><div class="rod" data-place="3"><div class="rod-label">1k</div><button type="button" class="bead upper off" data-bead="upper" aria-label="Upper 5-bead in 1k" aria-pressed="false"></button><button type="button" class="bead lower" data-bead="lower" data-lower="0" style="--i:0" aria-label="Lower bead 1 in 1k" aria-pressed="false"></button><button type="button" class="bead lower" data-bead="lower" data-lower="1" style="--i:1" aria-label="Lower bead 2 in 1k" aria-pressed="false"></button><button type="button" class="bead lower" data-bead="lower" data-lower="2" style="--i:2" aria-label="Lower bead 3 in 1k" aria-pressed="false"></button><button type="button" class="bead lower" data-bead="lower" data-lower="3" style="--i:3" aria-label="Lower bead 4 in 1k" aria-pressed="false"></button><div class="digit">0</div></div><div class="rod" data-place="2"><div class="rod-label">100</div><button type="button" class="bead upper off" data-bead="upper" aria-label="Upper 5-bead in 100" aria-pressed="false"></button><button type="button" class="bead lower" data-bead="lower" data-lower="0" style="--i:0" aria-label="Lower bead 1 in 100" aria-pressed="false"></button><button type="button" class="bead lower" data-bead="lower" data-lower="1" style="--i:1" aria-label="Lower bead 2 in 100" aria-pressed="false"></button><button type="button" class="bead lower" data-bead="lower" data-lower="2" style="--i:2" aria-label="Lower bead 3 in 100" aria-pressed="false"></button><button type="button" class="bead lower" data-bead="lower" data-lower="3" style="--i:3" aria-label="Lower bead 4 in 100" aria-pressed="false"></button><div class="digit">0</div></div><div class="rod" data-place="1"><div class="rod-label">10</div><button type="button" class="bead upper off" data-bead="upper" aria-label="Upper 5-bead in 10" aria-pressed="false"></button><button type="button" class="bead lower" data-bead="lower" data-lower="0" style="--i:0" aria-label="Lower bead 1 in 10" aria-pressed="false"></button><button type="button" class="bead lower" data-bead="lower" data-lower="1" style="--i:1" aria-label="Lower bead 2 in 10" aria-pressed="false"></button><button type="button" class="bead lower" data-bead="lower" data-lower="2" style="--i:2" aria-label="Lower bead 3 in 10" aria-pressed="false"></button><button type="button" class="bead lower" data-bead="lower" data-lower="3" style="--i:3" aria-label="Lower bead 4 in 10" aria-pressed="false"></button><div class="digit">0</div></div><div class="rod" data-place="0"><div class="rod-label">1</div><button type="button" class="bead upper off" data-bead="upper" aria-label="Upper 5-bead in 1" aria-pressed="false"></button><button type="button" class="bead lower" data-bead="lower" data-lower="0" style="--i:0" aria-label="Lower bead 1 in 1" aria-pressed="false"></button><button type="button" class="bead lower" data-bead="lower" data-lower="1" style="--i:1" aria-label="Lower bead 2 in 1" aria-pressed="false"></button><button type="button" class="bead lower" data-bead="lower" data-lower="2" style="--i:2" aria-label="Lower bead 3 in 1" aria-pressed="false"></button><button type="button" class="bead lower" data-bead="lower" data-lower="3" style="--i:3" aria-label="Lower bead 4 in 1" aria-pressed="false"></button><div class="digit">0</div></div></div></div>
+    <div class="bead-instruction" id="beadInstruction">Top bead = 5 · Each lower bead = 1 · Tap beads in Try mode</div>
+   </div>
+   <section class="tutor" aria-label="Teaching and answer controls">
+    <div class="mode-row"><div class="seg"><button id="guideMode" class="active" type="button">👀 Guide</button><button id="tryMode" type="button">✋ Try it</button></div><label class="voice-options"><input id="autoVoice" type="checkbox" checked><span id="autoVoiceLabel">Auto voice</span></label></div>
+    <div class="progress-meta"><span id="stepCounter">Step 0 of 0</span><span id="opCounter">Working it out</span></div><div class="progress" id="progress"><div id="progressFill"></div><input type="range" id="stepSlider" aria-label="Jump to a lesson step" min="0" max="1" value="0" step="1"></div>
+    <div class="explain" id="explain"><span class="tag" id="formulaTag">Start here</span><div class="formula" id="formula">8 + 5 − 3 + 12 − 7</div><div class="movement" id="moveDescription">Let's start with 8 on the abacus.</div><div class="why" id="whyDescription">The upper bead is worth 5. Lower beads are worth 1.</div></div>
+    <div class="guide-controls" id="guideControls"><button class="action" id="prevBtn" type="button">← Back</button><button class="action primary" id="nextBtn" type="button">Next →</button><button class="action secondary" id="playBtn" type="button">▶ Play</button><button class="action gold" id="voiceBtn" type="button">🔊 Hear</button></div>
+    <div class="practice-panel"><div class="practice-row"><label class="sr-only" for="answerInput">Your answer</label><input id="answerInput" type="number" inputmode="numeric" min="0" step="1" placeholder="Your answer / 你的答案"><button class="action primary" id="checkBtn" type="button">✓ Check</button><button class="action" id="revealBtn" type="button">Reveal</button></div><div class="feedback" id="feedback" aria-live="polite"></div><div class="tip" id="practiceHint">Type an answer, or choose Try it to move the beads yourself.</div></div>
+   </section>
   </div>
-  <div class="footer" data-i18n="footer">Made for curious little minds. Four levels, bilingual voice, and a five-column abacus.</div>
+ </section>
+ <details class="advanced"><summary id="aboutSummary">Parent tips & formula reference</summary><p id="aboutText">Small friends use 5 (e.g., +3 = +5 −2). Big friends use 10 (e.g., +5 = +10 −5). Level 4 uses repeated addition/subtraction for multiplication/division. Whole-number answers only. Standard multiplication/division precedence is respected; calculations stay within five Soroban rods (0–99,999).</p></details>
 </main>
+<noscript>This interactive lesson needs JavaScript. / 请使用支持 JavaScript 的浏览器。</noscript>
 <script>
-'use strict';
-(() => {
-  const $ = id => document.getElementById(id);
-  const labels = [
-    {en:'Ones',zh:'个位'},
-    {en:'Tens',zh:'十位'},
-    {en:'Hundreds',zh:'百位'},
-    {en:'Thousands',zh:'千位'},
-    {en:'Ten-thousands',zh:'万位'}
-  ];
-  const translations={
-    en:{brandSub:'算盘小达人 · Little math adventures',voice:'Hear step',heroTitle:'Little beads, big ideas! ✨',heroSub:'Type a maths question. Watch the beads move, discover the helper formula, and listen to every step.',questionLabel:'Your maths question',addSub:'+ and −',showMe:'Show me →',watch:'Watch the beads!',abacusShows:'ABACUS SHOWS',topBead:'Top bead = 5',bottomBead:'Bottom bead = 1',touchBeam:'Touching the bar counts!',autoVoice:'Read each new step aloud',learnTitle:'🌱 How bead maths works',learnOneTitle:'1. Move the beads',learnOneDesc:'Beads touching the middle bar are active. Watch the ones, tens and hundreds columns.',learnFiveTitle:'2. Small friends of 5 · 小朋友',learnFiveDesc:"When you can't move enough small beads, use 5 and its little helper.",learnTenTitle:'3. Big friends of 10 · 大朋友',learnTenDesc:'When a column is full, carry or borrow with a friend of 10.',fiveFriends:'FRIENDS OF 5',tenFriends:'FRIENDS OF 10',parentTitle:'💡 A note for grown-ups',parentNote:'For age 5, begin with 0–9, one rod, and direct moves. Practise five minutes at a time. Introduce 5-friends first, then 10-friends. Voice playback uses your device’s built-in English or Mandarin voice.',footer:'Made for curious little minds. Works offline after saving this HTML file. Addition and subtraction only, whole numbers from 0 to 9,999.',back:'← Back',replay:'↻ Replay',practice:'🎯 Try it',next:'Next step →',finish:'🌟 All done!',step:'Step',of:'of',begin:'Get ready! 🌈',direct:'Straight move',small:'Small friend of 5',big:'Big friend of 10',start:'Start here',finished:'You did it!',moveUp:'Move',moveDown:'Move',upper:'the top 5-bead',lower:'small bead',lowerMany:'small beads',toward:'toward the bar',away:'away from the bar',inColumn:'in the',column:'column',set:'First, show',onAbacus:'on the abacus.',startWhy:'The top bead is worth 5. Each lower bead is worth 1. Watch the first move!',easyWhy:'There is enough room, so we can move the beads directly.',fiveWhy:(d,c,sgn)=>`${d} and ${c} make 5. So use the small-friend trick!`,tenWhy:(d,c,sgn)=>`${d} and ${c} make 10. So use the big-friend trick!`,carry:'Carry to the next column.',borrow:'Borrow from the next column.',done:(n)=>`Fantastic! The answer is ${n}. Give yourself a star!`,completeWhy:'We moved the beads step by step, and the abacus shows the answer.',tryInstruction:'Now it’s your turn! Tap the beads to show the answer, then check your work.',practiceReady:'Try to show the answer by tapping the beads. Tap an active bead to move it away or an inactive bead to bring it toward the bar.',correct:(n)=>`🎉 Hooray! You made ${n}. That is correct!`,incorrect:(n)=>`🌈 Good try! Your beads show ${n}. Look at the question and try again.`,check:'✓ Check my answer',reset:'↻ Reset beads',backGuide:'← Guided lesson',error:'Enter a question like 4 + 3 or 13 − 7, using numbers from 0 to 9,999.',negative:'Let’s start with a question whose answer is zero or more. Try 8 − 3!',limit:'This lesson uses five columns. Use numbers up to 9,999.'},
-    zh:{brandSub:'算盘小达人 · 快乐学心算',voice:'朗读步骤',heroTitle:'小珠子，大智慧！✨',heroSub:'输入一道算术题，看珠子怎么移动，学习口诀，再听中文讲解。',questionLabel:'输入算术题',addSub:'加法和减法',showMe:'开始演示 →',watch:'看珠子怎么动！',abacusShows:'算盘上的数字',topBead:'上珠 = 5',bottomBead:'下珠 = 1',touchBeam:'靠梁的珠子才算数！',autoVoice:'每一步自动语音讲解',learnTitle:'🌱 学会算盘三步走',learnOneTitle:'1. 认识算盘珠子',learnOneDesc:'靠近中间横梁的珠子才算数。认识个位、十位和百位。',learnFiveTitle:'2. 小朋友：凑成 5',learnFiveDesc:'下珠不够用时，请上珠 5 和小朋友帮忙。',learnTenTitle:'3. 大朋友：凑成 10',learnTenDesc:'这一档不够时，用凑十法进位或借位。',fiveFriends:'凑 5 的好朋友',tenFriends:'凑 10 的好朋友',parentTitle:'💡 给爸爸妈妈的小提示',parentNote:'五岁孩子先练习 0 到 9 的单档算盘，每次约五分钟。熟悉直加直减后再学凑五、凑十。语音使用设备内置的普通话语音。',footer:'为爱学习的小朋友制作。保存网页后可离线使用。支持 0 到 9,999 的整数加减法。',back:'← 上一步',replay:'↻ 重新演示',practice:'🎯 自己试试',next:'下一步 →',finish:'🌟 完成啦！',step:'第',of:'步，共',begin:'准备好啦！🌈',direct:'直加 / 直减',small:'小朋友：凑 5',big:'大朋友：凑 10',start:'先摆数字',finished:'太棒啦！',moveUp:'移动',moveDown:'移动',upper:'上珠（5）',lower:'颗下珠',lowerMany:'颗下珠',toward:'靠近横梁',away:'离开横梁',inColumn:'在',column:'',set:'先在算盘上摆出',onAbacus:'。',startWhy:'上珠代表 5，每颗下珠代表 1。准备好看珠子动起来！',easyWhy:'珠子够用，直接拨珠就可以啦！',fiveWhy:(d,c,sgn)=>`${d} 和 ${c} 凑成 5，所以用小朋友口诀。`,tenWhy:(d,c,sgn)=>`${d} 和 ${c} 凑成 10，所以用大朋友口诀。`,carry:'往前一档进一。',borrow:'向前一档借一。',done:(n)=>`太棒啦！答案是 ${n}。奖励一颗小星星！`,completeWhy:'我们一步一步拨珠，算盘已经显示正确答案了。',tryInstruction:'轮到你啦！点一点击算盘珠子，试着拨出答案。',practiceReady:'试着自己拨珠。点亮的珠子可以拨开，没亮的珠子可以拨向横梁。',correct:(n)=>`🎉 太棒啦！你拨出了 ${n}，答对了！`,incorrect:(n)=>`🌈 继续加油！现在算盘上是 ${n}，再试一次吧！`,check:'✓ 检查答案',reset:'↻ 重新摆珠',backGuide:'← 返回教学',error:'请输入例如 4 + 3 或 13 − 7。数字要在 0 到 9,999 之间。',negative:'我们先练习答案不是负数的题目吧！试试 8 − 3。',limit:'这个算盘有五档，请使用不超过 9,999 的数字。'}
-  };
-  let lang='en',question={a:2,b:1,op:'+',answer:3},steps=[],index=0,practice=false,practiceDigits=null,lastMove=null;
-
-  Object.assign(translations.en,{
-    levelsEyebrow:'YOUR LEARNING PATH',levelsTitle:'Four little adventures 🧮',surprise:'New question',addSub:'+, −, × and ÷',
-    footer:'Made for curious little minds. Four learning levels, animated beads, and English / Mandarin voice.',
-    error:'Enter something like 4 + 3, 12 - 7, 3 × 4 or 12 ÷ 3.',
-    limit:'Use up to 9,999 for addition/subtraction and small multiplication/division facts up to 12.',
-    divideError:'Division must be exact, with a divisor from 1 to 12 and a whole-number answer. Try 12 ÷ 3.',
-    timesWhy:'Multiplication means adding equal groups again and again.',divideWhy:'Division means taking away equal groups and counting them.',
-    group:'Equal groups',quotient:'Show the answer',
-    levels:[
-      {name:'First beads',detail:'Easy + and −',description:'Start with numbers 0–9. Learn to move beads without carrying.',examples:['2 + 1','5 + 2','9 - 3','7 - 2','3 + 1'],default:'2 + 1'},
-      {name:'5 & 10 friends',detail:'Carry and borrow',description:'Use the small friends of 5 and big friends of 10, one move at a time.',examples:['4 + 3','8 + 5','13 - 7','10 - 6','9 + 6'],default:'4 + 3'},
-      {name:'Bigger numbers',detail:'Tens and hundreds',description:'Read the ones, tens and hundreds rods. Try multi-digit addition and subtraction.',examples:['27 + 45','100 - 8','138 + 247','305 - 128','476 + 368'],default:'27 + 45'},
-      {name:'Times & sharing',detail:'Multiply and divide',description:'Learn × by adding equal groups and ÷ by subtracting equal groups. Then show the answer.',examples:['3 × 4','4 × 6','12 ÷ 3','20 ÷ 5','7 × 8'],default:'3 × 4'}
-    ]
-  });
-  Object.assign(translations.zh,{
-    levelsEyebrow:'我的学习之路',levelsTitle:'四关算盘小冒险 🧮',surprise:'换一道题',addSub:'加、减、乘、除',
-    footer:'为爱学习的小朋友制作。四个等级、互动算盘、英语和普通话语音。',
-    error:'请输入算术题，例如 4 + 3、12 - 7、3 × 4 或 12 ÷ 3。',
-    limit:'加减数不超过 9,999，乘除练习使用 12 以内的数。',
-    divideError:'除法要整除，除数为 1 到 12，结果必须是整数。试试 12 ÷ 3。',
-    timesWhy:'乘法就是把相同的一组数一遍又一遍地加起来。',divideWhy:'除法可以一次减去一组，看看能减几组。',
-    group:'相同的组',quotient:'摆出答案',
-    levels:[
-      {name:'认识算盘珠',detail:'简单加减法',description:'先练习 0 到 9，不用进位，认识上下珠。',examples:['2 + 1','5 + 2','9 - 3','7 - 2','3 + 1'],default:'2 + 1'},
-      {name:'凑五和凑十',detail:'进位与借位',description:'学习小朋友凑五和大朋友凑十的口诀，慢慢拨珠。',examples:['4 + 3','8 + 5','13 - 7','10 - 6','9 + 6'],default:'4 + 3'},
-      {name:'多位数高手',detail:'十位和百位',description:'认识个位、十位、百位，练习两位和三位数加减。',examples:['27 + 45','100 - 8','138 + 247','305 - 128','476 + 368'],default:'27 + 45'},
-      {name:'乘法与分组',detail:'乘法和除法',description:'乘法用重复加法，除法用重复减法，一步一步找答案。',examples:['3 × 4','4 × 6','12 ÷ 3','20 ÷ 5','7 × 8'],default:'3 × 4'}
-    ]
-  });
-  let level=1,stars=0,earnedForQuestion=false;
-  try{stars=Math.max(0,Number(localStorage.getItem('beadBuddyStars'))||0)}catch(e){}
-  const niceOp=op=>op==='*'?'×':op==='/'?'÷':op==='-'?'−':op;
-  const makeQuestionAnswer=(a,op,b)=>op==='+'?a+b:op==='-'?a-b:op==='*'?a*b:a/b;
-  function buildGroups(a,op,b){
-    const multiplication=op==='*',count=multiplication?b:a/b,unit=multiplication?a:b;
-    const out=[],initial=multiplication?0:a,kindWhy={en:multiplication?translations.en.timesWhy:translations.en.divideWhy,zh:multiplication?translations.zh.timesWhy:translations.zh.divideWhy};
-    out.push({digits:digitList(initial),kind:'start',formula:`${a} ${niceOp(op)} ${b} = ?`,text:{en:`First, show ${initial} on the abacus.`,zh:`先在算盘上拨出 ${initial}。`},why:kindWhy,focus:-1,moveType:null});
-    let current=initial;
-    for(let i=1;i<=count;i++){
-      const next=multiplication?current+unit:current-unit;
-      const segment=buildSteps(current,multiplication?'+':'-',unit).slice(1,-1);
-      for(const st of segment)out.push({...st,why:{en:`${multiplication?'Addition':'Subtraction'} group ${i} of ${count}. ${st.why.en}`,zh:`第 ${i} 组，共 ${count} 组。${st.why.zh}`}});
-      const en=multiplication?`Group ${i} of ${count}: add ${unit}. The beads now show ${next}.`:`Group ${i} of ${count}: take away ${unit}. ${next} remains. We have counted ${i} equal groups.`;
-      const zh=multiplication?`第 ${i} 组，共 ${count} 组：加上 ${unit}。算盘现在显示 ${next}。`:`第 ${i} 组，共 ${count} 组：减去 ${unit}，还剩下 ${next}。我们已经数到 ${i} 组。`;
-      out.push({digits:digitList(next),kind:'group',formula:multiplication?`${unit} × ${i} = ${next}`:`${a} − ${unit} × ${i} = ${next}`,text:{en,zh},why:kindWhy,focus:-1,moveType:null});
-      current=next;
-    }
-    const result=makeQuestionAnswer(a,op,b);
-    if(!multiplication){
-      out.push({digits:digitList(0),kind:'quotient',formula:`${a} ÷ ${b} = ${result}`,text:{en:`We made ${count} equal groups. Now reset the beads and show the quotient, ${result}.`,zh:`我们分出了 ${count} 组。现在重新拨珠，把商 ${result} 显示出来。`},why:kindWhy,focus:-1,moveType:null});
-      for(const st of buildSteps(0,'+',result).slice(1,-1))out.push({...st,why:{en:'Show the number of equal groups on the abacus. '+st.why.en,zh:'在算盘上摆出组数。'+st.why.zh}});
-    }
-    if(readNumber(out[out.length-1].digits)!==result)throw Error('Group answer mismatch');
-    out.push({digits:digitList(result),kind:'finished',formula:`${a} ${niceOp(op)} ${b} = ${result}`,text:{en:translations.en.done(result),zh:translations.zh.done(result)},why:kindWhy,focus:-1,moveType:null});
-    return out;
-  }
-  function refreshLevels(){
-    const t=translations[lang];
-    document.querySelectorAll('[data-level]').forEach(btn=>{
-      const n=Number(btn.dataset.level),l=t.levels[n-1];
-      btn.classList.toggle('selected',level===n);
-      btn.setAttribute('aria-pressed',String(level===n));
-      btn.querySelector('.level-number').textContent=lang==='zh'?`第 ${n} 关`:`LEVEL ${n}`;
-      btn.querySelector('.level-name').textContent=l.name;btn.querySelector('.level-detail').textContent=l.detail;
-    });
-    $('levelDescription').textContent=t.levels[level-1].description;
-    $('starCount').textContent=`⭐ ${stars}`;
-    $('examples').replaceChildren();
-    t.levels[level-1].examples.forEach(expr=>{
-      const btn=document.createElement('button');btn.type='button';btn.className='chip';btn.dataset.example=expr;btn.textContent=expr.replace(' - ',' − ');$('examples').appendChild(btn);
-    });
-  }
-  function newQuestion(){
-    const choices=translations.en.levels[level-1].examples;
-    if(level===1){
-      for(let tries=0;tries<100;tries++){
-        const a=Math.floor(Math.random()*10),b=Math.floor(Math.random()*8)+1,op=Math.random()<.5?'+':'-';
-        if(op==='-'&&b>a)continue;
-        if(op==='+'&&a+b>9)continue;
-        if(buildSteps(a,op,b).every(st=>st.kind!=='big'&&st.kind!=='small')){setQuestion(`${a} ${op} ${b}`,true);return}
-      }
-    }
-    if(level===3){
-      const a=10+Math.floor(Math.random()*890),b=10+Math.floor(Math.random()*180),op=Math.random()<.58?'+':'-';
-      setQuestion(op==='-'&&b>a?`${b} - ${a}`:`${a} ${op} ${b}`,true);return;
-    }
-    const current=$('question').value.trim().replace(/\s+/g,'');
-    const other=choices.filter(v=>v.replace(/\s+/g,'')!==current);
-    setQuestion((other.length?other:choices)[Math.floor(Math.random()*(other.length||choices.length))],true);
-  }
-  function bindStarCheck(){
-    $('checkBtn').addEventListener('click',()=>{
-      const n=readNumber(practiceDigits),correct=n===question.answer;
-      let msg=correct?translations[lang].correct(n):translations[lang].incorrect(n);
-      if(correct&&!earnedForQuestion){earnedForQuestion=true;stars++;try{localStorage.setItem('beadBuddyStars',String(stars))}catch(e){}refreshLevels();msg+=' ⭐'}
-      $('practiceStatus').textContent=msg;speak(msg);
-    });
-  }
-
-  const digitList=n=>Array.from({length:5},(_,i)=>Math.floor(n/10**i)%10);
-  const readNumber=arr=>arr.reduce((sum,d,i)=>sum+d*10**i,0);
-  const showSign=(n)=>n<0?'−'+(-n):'+'+n;
-  const formulaFor=(d,e,delta,kind,place)=>{
-    const p=10**place;
-    if(kind==='small')return `${showSign(delta*p)} = ${showSign(Math.sign(delta)*5*p)} ${showSign(-Math.sign(delta)*(5-Math.abs(delta))*p)}`;
-    if(kind==='big')return `${showSign(delta*p)} = ${showSign(Math.sign(delta)*10*p)} ${showSign(-Math.sign(delta)*(10-Math.abs(delta))*p)}`;
-    if(Math.floor(d/5)!==Math.floor(e/5)){
-      const hi=(e>=5?5:-5),lo=e%5-d%5;
-      return `${showSign(delta*p)} = ${showSign(hi*p)}${lo?` ${showSign(lo*p)}`:''}`;
-    }
-    return showSign(delta*p);
-  };
-  // Construct physically possible bead movements, including cascading carries and borrows.
-  function buildSteps(a,op,b){
-    const digs=digitList(a),out=[];
-    out.push({digits:[...digs],kind:'start',moveType:null,place:0,formula:`${a} ${op==='+'?'+':'−'} ${b} = ?`,text:{en:translations.en.set+' '+a+' '+translations.en.onAbacus,zh:translations.zh.set+' '+a+translations.zh.onAbacus},why:{en:translations.en.startWhy,zh:translations.zh.startWhy},focus:-1});
-    let groupId=0;
-    function changeTo(place,target,context){
-      const before=digs[place];if(before===target)return;
-      const hBefore=before>=5?1:0,hAfter=target>=5?1:0;
-      const lowBefore=before%5,lowAfter=target%5;
-      const moves=[];
-      if(hBefore!==hAfter)moves.push({type:'upper',amount:(hAfter-hBefore)*5});
-      if(lowAfter!==lowBefore)moves.push({type:'lower',amount:lowAfter-lowBefore});
-      moves.forEach((move,j)=>{
-        digs[place]+=move.amount;
-        const qty=Math.abs(move.amount),toward=move.amount>0;
-        const names=labels[place];
-        const en=`${toward?'Move':'Move'} ${move.type==='upper'?'the top 5-bead':qty+' lower bead'+(qty>1?'s':'')} ${toward?'toward':'away from'} the bar in the ${names.en.toLowerCase()} column.`;
-        const zh=`在${names.zh}，把${move.type==='upper'?'上珠（5）':qty+' 颗下珠'}${toward?'拨向':'拨离'}横梁。`;
-        out.push({digits:[...digs],kind:context.kind,formula:context.formula,text:{en,zh},why:context.why,place,moveType:move.type,amount:move.amount,focus:place,group:context.group,groupStep:j+1,groupLength:moves.length});
-      });
-    }
-    function process(place,delta,parentContext=null){
-      if(delta===0)return;
-      if(place>=5)throw new Error('Number exceeds available columns');
-      let d=digs[place],rawTarget=d+delta,group=++groupId;
-      const small=rawTarget>=0&&rawTarget<=9&&Math.abs(delta)<5&&((delta>0&&d<5&&rawTarget>=5)||(delta<0&&d>=5&&rawTarget<5));
-      const kind=rawTarget<0||rawTarget>9?'big':small?'small':'direct';
-      const complement=kind==='big'?10-Math.abs(delta):kind==='small'?5-Math.abs(delta):0;
-      const baseFormula=formulaFor(d,Math.max(0,Math.min(9,rawTarget)),delta,kind,place);
-      const why={
-        en:kind==='small'?translations.en.fiveWhy(Math.abs(delta),complement):kind==='big'?translations.en.tenWhy(Math.abs(delta),complement):translations.en.easyWhy,
-        zh:kind==='small'?translations.zh.fiveWhy(Math.abs(delta),complement):kind==='big'?translations.zh.tenWhy(Math.abs(delta),complement):translations.zh.easyWhy
-      };
-      const context=parentContext||{kind,formula:baseFormula,why,group};
-      if(kind==='big'){
-        if(delta>0){
-          process(place+1,+1,context);
-          changeTo(place,d-complement,context);
-        }else{
-          process(place+1,-1,context);
-          changeTo(place,d+complement,context);
-        }
-      }else changeTo(place,rawTarget,context);
-    }
-    // Soroban convention: process the larger place values first.
-    for(let place=3;place>=0;place--){
-      const digit=Math.floor(b/10**place)%10;
-      if(digit)process(place,(op==='+'?1:-1)*digit);
-    }
-    const ans=op==='+'?a+b:a-b;
-    if(readNumber(digs)!==ans)throw new Error('Internal abacus calculation mismatch');
-    out.push({digits:[...digs],kind:'finished',formula:`${a} ${op==='+'?'+':'−'} ${b} = ${ans}`,text:{en:translations.en.done(ans),zh:translations.zh.done(ans)},why:{en:translations.en.completeWhy,zh:translations.zh.completeWhy},focus:-1,moveType:null});
-    return out;
-  }
-  const rodEls=[];
-  function createBoard(){
-    // Beads are deliberately included in the HTML itself. Some phone/file
-    // previews do not execute JavaScript, but the actual abacus still renders.
-    const board=$('boardInner');
-    for(let place=4;place>=0;place--){
-      const rod=board.querySelector(`.rod[data-place="${place}"]`);
-      if(!rod)throw new Error('Missing visible abacus column '+place);
-      const name=rod.querySelector('.rod-name');
-      const upper=rod.querySelector('.bead.upper');
-      const lower=Array.from(rod.querySelectorAll('.bead.lower'));
-      const val=rod.querySelector('.place-value');
-      rodEls[place]={rod,name,upper,lower,val};
-      rod.addEventListener('click',e=>{
-        const btn=e.target.closest('button.bead');if(!practice||!btn)return;
-        let current=practiceDigits[place],high=current>=5?5:0,lo=current%5;
-        if(btn.dataset.bead==='upper')high=high?0:5;
-        else {const j=Number(btn.dataset.lower);lo=j<lo?j:j+1}
-        practiceDigits[place]=high+lo;
-        lastMove={place,moveType:btn.dataset.bead,amount:practiceDigits[place]-current,focus:place};
-        renderBoard(practiceDigits,lastMove);$('practiceStatus').textContent=translations[lang].practiceReady;
-      });
-    }
-  }
-  function renderBoard(digits,step){
-    for(let place=4;place>=0;place--){
-      const r=rodEls[place],n=digits[place],on=n>=5,low=n%5;
-      r.name.textContent=lang==='zh'?labels[place].zh:['1','10','100','1k','10k'][place];
-      r.val.textContent=n;
-      r.rod.classList.toggle('current',step&&step.focus===place);
-      r.upper.classList.toggle('on',on);r.upper.classList.toggle('off',!on);
-      r.upper.classList.toggle('moved',!!(step&&step.focus===place&&step.moveType==='upper'));
-      r.upper.setAttribute('aria-pressed',String(on));
-      r.lower.forEach((b,j)=>{const isOn=j<low;b.classList.toggle('on',isOn);b.classList.toggle('moved',!!(step&&step.focus===place&&step.moveType==='lower'&&((step.amount>0&&j>=low-step.amount&&j<low)||(step.amount<0&&j>=low&&j<low-step.amount))));b.setAttribute('aria-pressed',String(isOn))});
-    }
-    $('currentValue').textContent=readNumber(digits).toLocaleString('en-US');
-  }
-  function speak(t){
-    if(!('speechSynthesis' in window)){ $('error').textContent=lang==='zh'?'您的浏览器不支持语音，请尝试 Safari 或 Chrome。':'Voice is unavailable in this browser. Try Safari or Chrome.';return}
-    window.speechSynthesis.cancel();
-    const utt=new SpeechSynthesisUtterance(t);
-    utt.lang=lang==='zh'?'zh-CN':'en-US';utt.rate=lang==='zh'?.84:.87;utt.pitch=1.13;
-    const voices=window.speechSynthesis.getVoices();
-    let chosen=voices.find(v=>v.lang.toLowerCase()===(lang==='zh'?'zh-cn':'en-us')&&v.localService) || voices.find(v=>v.lang.toLowerCase().startsWith(lang==='zh'?'zh':'en')&&v.localService) || voices.find(v=>v.lang.toLowerCase().startsWith(lang==='zh'?'zh':'en'));
-    if(chosen)utt.voice=chosen;
-    window.speechSynthesis.speak(utt);
-  }
-  function speakCurrent(){
-    if(practice){speak(translations[lang].tryInstruction);return}
-    const s=steps[index];let text=s.text[lang];
-    if(s.kind==='small'||s.kind==='big'){
-      const formula=s.formula.replace(/\+/g,lang==='zh'?' 加 ':' plus ').replace(/−/g,lang==='zh'?' 减 ':' minus ').replace(/=/g,lang==='zh'?' 等于 ':' equals ').replace(/×/g,lang==='zh'?' 乘 ':' times ').replace(/÷/g,lang==='zh'?' 除以 ':' divided by ');
-      text=(lang==='zh'?(s.kind==='small'?'小朋友口诀。':'大朋友口诀。'):(s.kind==='small'?'Small friend formula. ':'Big friend formula. '))+formula+'. '+s.why[lang]+' '+text;
-    }else text=s.why[lang]+' '+text;
-    speak(text);
-  }
-  function render(){
-    document.documentElement.lang=lang==='zh'?'zh-CN':'en';
-    document.querySelectorAll('[data-i18n]').forEach(n=>n.textContent=translations[lang][n.dataset.i18n]);
-    $('langEn').classList.toggle('selected',lang==='en');$('langZh').classList.toggle('selected',lang==='zh');
-    $('langEn').setAttribute('aria-pressed',String(lang==='en'));$('langZh').setAttribute('aria-pressed',String(lang==='zh'));
-    refreshLevels();
-    const t=translations[lang];$('mathQuestion').textContent=`${question.a} ${niceOp(question.op)} ${question.b} = ?`;
-    $('answerHint').textContent=practice?(lang==='zh'?'自己来试试！':'Your turn!'):t.watch;
-    const s=steps[index];renderBoard(practice?practiceDigits:s.digits,practice?lastMove:s);
-    $('stepCounter').textContent=lang==='zh'?`第 ${index} 步，共 ${steps.length-1} 步`:`Step ${index} of ${steps.length-1}`;
-    $('progressBar').style.width=100*index/Math.max(1,steps.length-1)+'%';
-    const names={start:t.start,direct:t.direct,small:t.small,big:t.big,group:t.group,quotient:t.quotient,finished:t.finished};
-    $('kindLabel').textContent=names[s.kind];
-    $('formulaTag').textContent=names[s.kind];$('formula').textContent=s.formula;
-    $('moveDescription').textContent=practice?t.tryInstruction:s.text[lang];
-    $('whyDescription').textContent=practice?t.practiceReady:s.why[lang];
-    $('explanation').className='explanation'+(s.kind==='small'?' small':s.kind==='big'?' big':'');
-    $('prevBtn').textContent=t.back;$('prevBtn').disabled=index===0;
-    $('replayBtn').textContent=t.replay;$('practiceBtn').textContent=t.practice;
-    $('nextBtn').textContent=index===steps.length-1?t.finish:t.next;
-    $('nextBtn').disabled=index===steps.length-1;
-    $('guideNav').style.display=practice?'none':'flex';$('practiceActions').classList.toggle('visible',practice);
-    $('practiceStatus').classList.toggle('visible',practice);
-    $('checkBtn').textContent=t.check;$('resetPracticeBtn').textContent=t.reset;$('backGuideBtn').textContent=t.backGuide;
-    if(practice)$('practiceStatus').textContent=t.practiceReady;
-  }
-  function go(next,voice=true){if(practice)return;index=Math.max(0,Math.min(steps.length-1,next));render();if(voice&&$('autoVoice').checked)speakCurrent()}
-function setQuestion(raw,voice=false){
-  const m=raw.replace(/[－—–−]/g,'-').replace(/[＋]/g,'+').replace(/[×xX＊]/g,'*').replace(/[÷／]/g,'/').replace(/,/g,'').trim().match(/^(\d+)\s*([+\-*/])\s*(\d+)$/);
-  if(!m){$('error').textContent=translations[lang].error;return false}
-  const a=Number(m[1]),b=Number(m[3]),op=m[2],answer=makeQuestionAnswer(a,op,b);
-  if(op==='-'&&a<b){$('error').textContent=translations[lang].negative;return false}
-  if(op==='/'&&(!b||b>12||a>144||!Number.isInteger(answer)||answer>12)){$('error').textContent=translations[lang].divideError;return false}
-  if(op==='*'&&(a>12||b>12)){$('error').textContent=translations[lang].limit;return false}
-  if((op==='+'||op==='-')&&(a>9999||b>9999||answer>99999)){$('error').textContent=translations[lang].limit;return false}
-  try{steps=op==='*'||op==='/'?buildGroups(a,op,b):buildSteps(a,op,b)}catch(e){$('error').textContent=translations[lang].limit;return false}
-  question={a,b,op,answer};
-  if(op==='*'||op==='/')level=4;
-  else if(level===4)level=Math.max(a,b)>99?3:Math.max(a,b)>9||steps.some(st=>st.kind==='small'||st.kind==='big')?2:1;
-  else if(level===1&&(Math.max(a,b)>9||steps.some(st=>st.kind==='small'||st.kind==='big')))level=Math.max(a,b)>99?3:2;
-  else if(level===2&&Math.max(a,b)>99)level=3;
-  index=0;practice=false;lastMove=null;earnedForQuestion=false;
-  $('error').textContent='';$('question').value=`${a} ${niceOp(op)} ${b}`;
-  render();if(voice&&$('autoVoice').checked)speakCurrent();return true;
+(()=>{'use strict';
+const $=id=>document.getElementById(id), MAX=99999, MAX_OPERANDS=40;
+const labels=[{en:'ones',zh:'个位'},{en:'tens',zh:'十位'},{en:'hundreds',zh:'百位'},{en:'thousands',zh:'千位'},{en:'ten-thousands',zh:'万位'}];
+const T={
+ en:{levels:['Direct moves','5 & 10 friends','Big numbers','Multiply / divide'],question:'Math question · enter a chain of numbers',show:'Show',new:'🎲 New',terms:'Numbers per question',random:'Unlimited random questions · level-aware',shows:'BEADS SHOW',beads:'Top bead = 5 · Each lower bead = 1 · Tap beads in Try mode',guide:'👀 Guide',try:'✋ Try it',voice:'Auto voice',prev:'← Back',next:'Next →',play:'▶ Play',pause:'⏸ Pause',hear:'🔊 Hear',answer:'Your answer',check:'✓ Check',reveal:'Reveal',hint:'Type an answer, or choose Try it to move the beads yourself.',start:'Start here',direct:'Direct move',small:'Small friend of 5',big:'Big friend of 10',group:'Equal groups',quotient:'Show the quotient',complete:'Great work!',calculate:'Next operation',step:'Step',of:'of',op:'Operation',ready:'Ready to try!',correct:'🎉 Correct! You earned a star!',correctAgain:'🎉 Correct! Great work!',wrong:(a)=>`Not quite. You entered ${a}. Try moving the beads or use Reveal.`,missing:'Enter an answer first, or use Try it to set the beads.',revealText:(n)=>`The answer is ${n}. Follow the steps to learn why.`,tryHelp:'Touch the beads to show the answer. Then press Check.',started:(n)=>`Start by showing ${n} on the abacus.`,startWhy:'A top bead is worth 5 and each lower bead is worth 1.',move:(amount,type,place)=>`Move ${type==='upper'?'the top 5-bead':Math.abs(amount)+' lower bead'+(Math.abs(amount)!==1?'s':'')} ${amount>0?'toward':'away from'} the beam in the ${labels[place].en} column.`,fiveWhy:(n)=>`Use the friend of 5. For ${n}, think of 5 and its partner.`,tenWhy:(n)=>`Use the friend of 10. For ${n}, carry or borrow to the next column.`,directWhy:'These beads can move directly.',subtotal:(a,op,b,n)=>`Now ${a} ${op==='+'?'plus':'minus'} ${b} makes ${n}.`,reset:(n)=>`Now return to the main calculation. Show ${n} on the abacus.`,groupText:(i,count,unit,isMul,n)=>isMul?`Group ${i} of ${count}: add ${unit}. Now the beads show ${n}.`:`Take away group ${i} of ${count}, ${unit} beads. ${n} remains.`,groupWhy:(isMul)=>isMul?'Multiplication means adding equal groups.':'Division means taking away equal groups and counting how many groups.',quotientText:(n)=>`We counted the groups. Reset the beads to show the answer ${n}.`,finished:(n)=>`Well done! The full answer is ${n}.`,error:'Enter whole numbers joined by +, −, ×, or ÷ (for example: 8 + 5 − 3 + 12 − 7).',zero:'Division by zero is not possible.',whole:'For beginner abacus lessons, division must give a whole-number result.',nonnegative:'Every running total must stay zero or above. Try changing the subtraction.',limit:'The five-rod abacus supports running values from 0 to 99,999. Multiplication and division use up to 12 equal groups.',tooLong:'This lesson supports up to 40 numbers per question.',about:'Parent tips & formula reference',aboutText:'Small friends: +3 = +5 −2. Big friends: +5 = +10 −5. Mixed multiplication and division follow standard precedence before addition/subtraction. Level 4 teaches × and ÷ through equal groups rather than advanced Soroban multiplication. Use the number selector to generate as many fresh questions as you like.'},
+ zh:{levels:['直接拨珠','凑五与凑十','多位数计算','乘法与除法'],question:'输入算式 · 可以连续输入多个数字',show:'演示',new:'🎲 换题',terms:'每题数字个数',random:'无限随机出题 · 按等级调整难度',shows:'算盘显示',beads:'上珠 = 5 · 每颗下珠 = 1 · 在自己试试模式可拨珠',guide:'👀 教学',try:'✋ 自己试',voice:'自动语音',prev:'← 上一步',next:'下一步 →',play:'▶ 播放',pause:'⏸ 暂停',hear:'🔊 朗读',answer:'你的答案',check:'✓ 检查',reveal:'看答案',hint:'输入答案，或选“自己试”拨珠后检查。',start:'开始摆珠',direct:'直加直减',small:'小朋友：凑 5',big:'大朋友：凑 10',group:'相同的组',quotient:'拨出商',complete:'太棒了！',calculate:'下一步算式',step:'第',of:'步，共',op:'运算',ready:'准备好啦！',correct:'🎉 答对了！奖励一颗星星！',correctAgain:'🎉 答对了！继续加油！',wrong:(a)=>`还没答对哦。你填写了 ${a}，再试一次！`,missing:'请先输入答案，或在“自己试”模式拨出答案。',revealText:(n)=>`正确答案是 ${n}。跟着步骤一起学习吧！`,tryHelp:'动手拨珠显示答案，再点击检查。',started:(n)=>`先在算盘上拨出 ${n}。`,startWhy:'上珠代表五，每颗下珠代表一。',move:(amount,type,place)=>`在${labels[place].zh}，把${type==='upper'?'上珠（5）':Math.abs(amount)+' 颗下珠'}${amount>0?'拨向':'拨离'}横梁。`,fiveWhy:(n)=>`用凑五口诀。${n} 的小朋友是 ${5-n}。`,tenWhy:(n)=>`用凑十口诀。${n} 的大朋友是 ${10-n}，要进位或借位。`,directWhy:'珠子够用，可以直接拨。',subtotal:(a,op,b,n)=>`现在 ${a} ${op==='+'?'加':'减'} ${b} 等于 ${n}。`,reset:(n)=>`回到原来的算式，在算盘上重新拨出 ${n}。`,groupText:(i,count,unit,isMul,n)=>isMul?`第 ${i} 组，共 ${count} 组，加上 ${unit}，现在是 ${n}。`:`减去第 ${i} 组，共 ${count} 组，每组 ${unit}，还剩 ${n}。`,groupWhy:(isMul)=>isMul?'乘法就是重复加上相同的数。':'除法就是重复减去相同的数，数一数有几组。',quotientText:(n)=>`已经数出组数。重新拨珠，显示答案 ${n}。`,finished:(n)=>`太棒了！整道题的答案是 ${n}。`,error:'请输入用加减乘除连接的整数，如 8 + 5 − 3 + 12 − 7。',zero:'不能除以零。',whole:'初级算盘除法需要能够整除，答案必须是整数。',nonnegative:'每一步的计算结果都不能小于零，请调整减法。',limit:'五档算盘范围为 0 到 99,999。乘除法最多使用 12 组。',tooLong:'每题最多支持 40 个数字。',about:'家长提示与口诀',aboutText:'小朋友凑五：+3 = +5 −2。大朋友凑十：+5 = +10 −5。混合运算遵循先乘除后加减。第四关通过重复加减法介绍乘除，不是高级算盘乘除算法。可以不断生成随机练习题。'}
+};
+let lang='en',level=1,question=null,steps=[],index=0,tryMode=false,tryDigits=[0,0,0,0,0],lastMove=null,stars=0,earned=false,timer=null,history=[];
+try{stars=Math.max(0,Number(localStorage.getItem('beadBuddyStarsV3')||localStorage.getItem('beadBuddyStars')||0))}catch(_e){}
+const digits=n=>Array.from({length:5},(_,i)=>Math.floor(n/10**i)%10), readDigits=d=>d.reduce((s,v,i)=>s+v*10**i,0), sign=n=>n<0?'−'+(-n):'+'+n;
+const prettyOp=op=>op==='*'?'×':op==='/'?'÷':op==='-'?'−':op;
+const displayExpr=s=>s.replace(/\*/g,'×').replace(/\//g,'÷').replace(/-/g,'−').replace(/\s+/g,' ').trim();
+function fmtMove(d,e,delta,kind,place){const p=10**place,n=Math.abs(delta),sg=Math.sign(delta);
+ if(kind==='small')return `${sign(delta*p)} = ${sign(sg*5*p)} ${sign(-sg*(5-n)*p)}`;
+ if(kind==='big')return `${sign(delta*p)} = ${sign(sg*10*p)} ${sign(-sg*(10-n)*p)}`;
+ if(Math.floor(d/5)!==Math.floor(e/5)){const up=e>=5?5:-5,lo=e%5-d%5;return `${sign(delta*p)} = ${sign(up*p)}${lo?' '+sign(lo*p):''}`}
+ return sign(delta*p);
 }
-  function initialize(){
-    createBoard();
-    $('mathForm').addEventListener('submit',e=>{e.preventDefault();setQuestion($('question').value,true)});
-    $('examples').addEventListener('click',e=>{const b=e.target.closest('[data-example]');if(b)setQuestion(b.dataset.example,true)});
-    $('levelGrid').addEventListener('click',e=>{const b=e.target.closest('[data-level]');if(!b)return;level=Number(b.dataset.level);setQuestion(translations.en.levels[level-1].default,false)});
-    $('surpriseBtn').addEventListener('click',newQuestion);
-    $('langEn').addEventListener('click',()=>{lang='en';window.speechSynthesis?.cancel();render()});
-    $('langZh').addEventListener('click',()=>{lang='zh';window.speechSynthesis?.cancel();render()});
-    $('prevBtn').addEventListener('click',()=>go(index-1));$('nextBtn').addEventListener('click',()=>go(index+1));
-    $('replayBtn').addEventListener('click',()=>{if(index===0){render();speakCurrent()}else{let el=$('boardInner');el.querySelectorAll('.moved').forEach(b=>{b.classList.remove('moved');void b.offsetWidth;b.classList.add('moved')});speakCurrent()}});
-    $('voiceBtn').addEventListener('click',speakCurrent);
-    $('practiceBtn').addEventListener('click',()=>{practice=true;practiceDigits=digitList(question.op==='*'||question.op==='/'?0:question.a);lastMove=null;render();if($('autoVoice').checked)speakCurrent()});
-    $('backGuideBtn').addEventListener('click',()=>{practice=false;render()});
-    $('resetPracticeBtn').addEventListener('click',()=>{practiceDigits=digitList(question.op==='*'||question.op==='/'?0:question.a);lastMove=null;render()});
-    bindStarCheck();
-    setQuestion('2 + 1');
+function baseStep(value,formula,kind='start',note=''){
+ return{digits:digits(value),kind,formula,focus:-1,moveType:null,amount:0,text:{en:T.en.started(value),zh:T.zh.started(value)},why:{en:T.en.startWhy,zh:T.zh.startWhy},note};
+}
+function buildSteps(a,op,b){
+ if(a<0||a>MAX||b<0||b>MAX||!Number.isInteger(a)||!Number.isInteger(b))throw Error('limit');
+ const final=op==='+'?a+b:a-b;
+ if(final<0)throw Error('nonnegative');if(final>MAX)throw Error('limit');
+ const ds=digits(a),out=[baseStep(a,`${a} ${prettyOp(op)} ${b} = ?`)];let group=0;
+ function change(place,target,ctx){const before=ds[place];if(before===target)return;
+  let moves=[];if((before>=5)!==(target>=5))moves.push({type:'upper',amount:(target>=5?1:-1)*5});
+  if(before%5!==target%5)moves.push({type:'lower',amount:target%5-before%5});
+  for(const m of moves){ds[place]+=m.amount;out.push({digits:[...ds],kind:ctx.kind,formula:ctx.formula,focus:place,moveType:m.type,amount:m.amount,group:ctx.group,text:{en:T.en.move(m.amount,m.type,place),zh:T.zh.move(m.amount,m.type,place)},why:ctx.why})}
+ }
+ function process(place,delta,parent=null){if(!delta)return;if(place>4)throw Error('limit');
+  let d=ds[place],target=d+delta,small=target>=0&&target<=9&&Math.abs(delta)<5&&((delta>0&&d<5&&target>=5)||(delta<0&&d>=5&&target<5));
+  const kind=target>9||target<0?'big':small?'small':'direct', n=Math.abs(delta);
+  const ctx=parent||{kind,group:++group,formula:fmtMove(d,Math.max(0,Math.min(9,target)),delta,kind,place),why:{en:kind==='big'?T.en.tenWhy(n):kind==='small'?T.en.fiveWhy(n):T.en.directWhy,zh:kind==='big'?T.zh.tenWhy(n):kind==='small'?T.zh.fiveWhy(n):T.zh.directWhy}};
+  if(kind==='big'){
+    const complement=10-n;
+    if(delta>0){process(place+1,1,ctx);change(place,d-complement,ctx)}
+    else{process(place+1,-1,ctx);change(place,d+complement,ctx)}
+  }else change(place,target,ctx);
+ }
+ for(let place=4;place>=0;place--){const d=Math.floor(b/10**place)%10;if(d)process(place,(op==='+'?1:-1)*d)}
+ if(readDigits(ds)!==final)throw Error('mismatch');
+ out.push({digits:[...ds],kind:'subtotal',formula:`${a} ${prettyOp(op)} ${b} = ${final}`,focus:-1,moveType:null,amount:0,text:{en:T.en.subtotal(a,op,b,final),zh:T.zh.subtotal(a,op,b,final)},why:{en:'Watch the new total on the abacus.',zh:'看看算盘上的新数字。'}});
+ return out;
+}
+function buildGroups(a,op,b){
+ if(op==='*'&&(a>MAX||b>12))throw Error('limit');
+ if(op==='/'&&b===0)throw Error('zero');
+ if(op==='/'&&(a%b!==0))throw Error('whole');
+ const times=op==='*'?b:a/b,unit=op==='*'?a:b,answer=op==='*'?a*b:a/b,isMul=op==='*';
+ if(times>12||answer>MAX||answer<0)throw Error('limit');
+ const out=[baseStep(isMul?0:a,`${a} ${prettyOp(op)} ${b} = ?`,'start')];
+ out[0].why={en:T.en.groupWhy(isMul),zh:T.zh.groupWhy(isMul)};
+ let n=isMul?0:a;
+ for(let i=1;i<=times;i++){
+   const next=isMul?n+unit:n-unit;
+   for(const s of buildSteps(n,isMul?'+':'-',unit).slice(1,-1))out.push({...s,stage:i});
+   n=next;
+   out.push({digits:digits(n),kind:'group',formula:isMul?`${unit} × ${i} = ${n}`:`${a} − ${unit} × ${i} = ${n}`,focus:-1,moveType:null,text:{en:T.en.groupText(i,times,unit,isMul,n),zh:T.zh.groupText(i,times,unit,isMul,n)},why:{en:T.en.groupWhy(isMul),zh:T.zh.groupWhy(isMul)}});
+ }
+ if(!isMul){out.push({digits:digits(0),kind:'quotient',formula:`${a} ÷ ${b} = ${answer}`,focus:-1,moveType:null,text:{en:T.en.quotientText(answer),zh:T.zh.quotientText(answer)},why:{en:T.en.groupWhy(false),zh:T.zh.groupWhy(false)}});
+  for(const s of buildSteps(0,'+',answer).slice(1,-1))out.push(s);
+ }
+ if(readDigits(out.at(-1).digits)!==answer)throw Error('mismatch');
+ out.push({digits:digits(answer),kind:'subtotal',formula:`${a} ${prettyOp(op)} ${b} = ${answer}`,focus:-1,moveType:null,text:{en:T.en.subtotal(a,'+',0,answer),zh:T.zh.subtotal(a,'+',0,answer)},why:{en:T.en.groupWhy(isMul),zh:T.zh.groupWhy(isMul)}});
+ return out;
+}
+function parseExpression(raw){
+ const clean=raw.replace(/[，,]/g,'').replace(/[－—–−]/g,'-').replace(/[＋]/g,'+').replace(/[×xX＊]/g,'*').replace(/[÷／]/g,'/').replace(/\s/g,'');
+ if(!/^\d+(?:[+\-*/]\d+)*$/.test(clean))throw Error('error');
+ const tokens=clean.match(/\d+|[+\-*/]/g), count=(tokens.length+1)/2;
+ if(count>MAX_OPERANDS)throw Error('tooLong');
+ const values=tokens.filter((_,i)=>i%2===0).map(Number),ops=tokens.filter((_,i)=>i%2===1);
+ if(values.some(n=>!Number.isSafeInteger(n)||n>MAX))throw Error('limit');
+ let groups=[],cur={sign:1,nums:[values[0]],ops:[]};
+ for(let i=0;i<ops.length;i++){
+  let op=ops[i],b=values[i+1];
+  if(op==='+'||op==='-'){groups.push(cur);cur={sign:op==='+'?1:-1,nums:[b],ops:[]}}
+  else{cur.ops.push(op);cur.nums.push(b)}
+ }
+ groups.push(cur);
+ let total=0;
+ for(let g of groups){let term=g.nums[0];
+  for(let i=0;i<g.ops.length;i++){
+   let b=g.nums[i+1],op=g.ops[i];
+   if(op==='/'&&b===0)throw Error('zero');if(op==='/'&&term%b!==0)throw Error('whole');
+   if(op==='*'&&b>12||op==='/'&&(term/b>12))throw Error('limit');
+   term=op==='*'?term*b:term/b;
+   if(!Number.isInteger(term)||term>MAX||term<0)throw Error('limit');
   }
-  initialize();
-  window.BeadBuddyTest={buildSteps,buildGroups,digitList,readNumber,setQuestion,refreshLevels};
+  g.value=term;
+  total+=g.sign*term;
+  if(total<0)throw Error('nonnegative');if(total>MAX)throw Error('limit');
+ }
+ return{groups,answer:total,expression:displayExpr(clean),count};
+}
+function buildExpression(parsed){
+ const out=[];let running=0,opNo=0;
+ for(let k=0;k<parsed.groups.length;k++){
+  const g=parsed.groups[k];let term=g.nums[0];
+  if(g.ops.length){for(let i=0;i<g.ops.length;i++){
+     const op=g.ops[i],b=g.nums[i+1];
+     const sub=buildGroups(term,op,b);
+     opNo++;
+     for(let j=0;j<sub.length;j++)out.push({...sub[j],operation:opNo,phase:`${term} ${prettyOp(op)} ${b}`,part:k+1});
+     term=op==='*'?term*b:term/b;
+   }}
+  if(k===0){if(!g.ops.length)out.push({...baseStep(term,parsed.expression+' = ?'),operation:1,phase:parsed.expression,part:1});running=term;continue}
+  if(g.ops.length)out.push({digits:digits(running),kind:'start',formula:`${running} ${g.sign>0?'+':'−'} ${term}`,focus:-1,moveType:null,operation:opNo+1,part:k+1,phase:{en:'Main calculation',zh:'主算式'},text:{en:T.en.reset(running),zh:T.zh.reset(running)},why:{en:T.en.startWhy,zh:T.zh.startWhy}});
+  const signOp=g.sign>0?'+':'-', sub=buildSteps(running,signOp,term),previous=running;
+  opNo++;
+  for(const s of sub.slice(1))out.push({...s,operation:opNo,part:k+1,phase:`${previous} ${prettyOp(signOp)} ${term}`});
+  running+=g.sign*term;
+ }
+ if(!out.length)out.push({...baseStep(running,parsed.expression),operation:1,part:1});
+ out.push({digits:digits(parsed.answer),kind:'finished',formula:`${parsed.expression} = ${parsed.answer}`,focus:-1,moveType:null,operation:Math.max(1,opNo),part:parsed.groups.length,phase:{en:'Finished',zh:'已完成'},text:{en:T.en.finished(parsed.answer),zh:T.zh.finished(parsed.answer)},why:{en:'Every step is complete. Nice work!',zh:'全部算完啦！'}});
+ if(readDigits(out.at(-1).digits)!==parsed.answer)throw Error('mismatch');
+ if(out.length>3500)throw Error('limit');
+ return out;
+}
+let rodRefs=[];
+function setupBoard(){for(let place=0;place<5;place++){
+ const el=document.querySelector(`.rod[data-place="${place}"]`);
+ rodRefs[place]={el,upper:el.querySelector('.upper'),lower:[...el.querySelectorAll('.lower')],label:el.querySelector('.rod-label'),digit:el.querySelector('.digit')};
+ el.addEventListener('click',ev=>{const b=ev.target.closest('.bead');if(!tryMode||!b)return;
+  const old=tryDigits[place];let high=old>=5?5:0,low=old%5;
+  if(b.dataset.bead==='upper')high=high===5?0:5;
+  else{let j=Number(b.dataset.lower);low=j<low?j:j+1}
+  tryDigits[place]=high+low;lastMove={focus:place,moveType:b.dataset.bead,amount:tryDigits[place]-old};
+  $('answerInput').value='';$('feedback').textContent='';renderBoard(tryDigits,lastMove);
+ });
+ }}
+function renderBoard(ds,step){for(let place=0;place<5;place++){
+ const r=rodRefs[place],v=ds[place],upper=v>=5,lower=v%5;
+ r.label.textContent=lang==='zh'?['个','十','百','千','万'][place]:['1','10','100','1k','10k'][place];
+ r.digit.textContent=v;r.el.classList.toggle('focus',step?.focus===place);
+ r.upper.classList.toggle('on',upper);r.upper.classList.toggle('off',!upper);r.upper.classList.toggle('moved',step?.focus===place&&step?.moveType==='upper');r.upper.setAttribute('aria-pressed',String(upper));
+ r.lower.forEach((b,j)=>{let on=j<lower;b.classList.toggle('on',on);const amount=step?.amount||0;
+ const moved=step?.focus===place&&step?.moveType==='lower'&&(amount>0?j>=lower-amount&&j<lower:amount<0?j>=lower&&j<lower-amount:false);
+ b.classList.toggle('moved',moved);b.setAttribute('aria-pressed',String(on));});
+ }$('currentValue').textContent=readDigits(ds).toLocaleString('en-US');
+}
+function translateUI(){const t=T[lang];document.documentElement.lang=lang==='zh'?'zh-CN':'en';
+ $('questionLabel').textContent=t.question;$('solveBtn').textContent=t.show;$('randomBtn').textContent=t.new;$('termsLabel').textContent=t.terms;$('randHint').textContent=t.random;
+ $('showsLabel').textContent=t.shows;$('beadInstruction').textContent=t.beads;$('guideMode').textContent=t.guide;$('tryMode').textContent=t.try;
+ $('autoVoiceLabel').textContent=t.voice;$('prevBtn').textContent=t.prev;$('nextBtn').textContent=t.next;$('voiceBtn').textContent=t.hear;
+ $('answerInput').placeholder=t.answer;$('checkBtn').textContent=t.check;$('revealBtn').textContent=t.reveal;$('practiceHint').textContent=t.hint;
+ $('aboutSummary').textContent=t.about;$('aboutText').textContent=t.aboutText;
+ for(let i=1;i<=4;i++){const el=document.querySelector(`[data-level="${i}"]`);el.querySelector('b').textContent=lang==='zh'?`第 ${i} 关`:`Level ${i}`;el.querySelector('small').textContent=t.levels[i-1];el.classList.toggle('active',level===i);el.setAttribute('aria-pressed',String(level===i))}
+ $('langEn').classList.toggle('selected',lang==='en');$('langZh').classList.toggle('selected',lang==='zh');$('langEn').setAttribute('aria-pressed',String(lang==='en'));$('langZh').setAttribute('aria-pressed',String(lang==='zh'));
+ $('stars').textContent='⭐ '+stars;
+}
+function render(){translateUI();$('expression').textContent=question?.expression||'';$('expression').title=question?.expression||'';
+ $('guideMode').classList.toggle('active',!tryMode);$('tryMode').classList.toggle('active',tryMode);
+ const s=steps[index],t=T[lang];if(!s)return;
+ renderBoard(tryMode?tryDigits:s.digits,tryMode?lastMove:s);
+ $('stepCounter').textContent=lang==='zh'?`第 ${index} 步，共 ${steps.length-1} 步`:`Step ${index} of ${steps.length-1}`;
+ $('opCounter').textContent=typeof s.phase==='object'?s.phase[lang]:(s.phase||(lang==='zh'?'开始练习':'Let’s calculate'));
+ $('progressFill').style.width=(index/Math.max(1,steps.length-1)*100)+'%';$('stepSlider').max=String(Math.max(1,steps.length-1));$('stepSlider').value=String(index);$('stepSlider').disabled=tryMode;
+ const names={start:t.start,direct:t.direct,small:t.small,big:t.big,group:t.group,quotient:t.quotient,subtotal:t.calculate,finished:t.complete};
+ $('formulaTag').textContent=names[s.kind]||t.calculate;$('formula').textContent=s.formula;$('moveDescription').textContent=tryMode?t.tryHelp:s.text[lang];$('whyDescription').textContent=tryMode?'':s.why[lang];
+ $('explain').className='explain'+(s.kind==='small'?' small':s.kind==='big'?' big':'');
+ $('prevBtn').disabled=tryMode||index===0;$('nextBtn').disabled=tryMode||index>=steps.length-1;
+ $('playBtn').disabled=tryMode;$('playBtn').textContent=timer?t.pause:t.play;
+}
+function stopPlay(){if(timer){clearTimeout(timer);timer=null}$('playBtn').textContent=T[lang].play}
+function speak(msg){if(!window.speechSynthesis)return;window.speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(msg);u.lang=lang==='zh'?'zh-CN':'en-US';u.rate=lang==='zh'?.88:.9;u.pitch=1.08;
+ const voices=window.speechSynthesis.getVoices();const prefer=lang==='zh'?'zh':'en';u.voice=voices.find(v=>v.lang.toLowerCase().startsWith(prefer)&&v.localService)||voices.find(v=>v.lang.toLowerCase().startsWith(prefer))||null;
+ window.speechSynthesis.speak(u);
+}
+function speakStep(){const s=steps[index];if(!s)return;let math=s.formula.replace(/\+/g,lang==='zh'?' 加 ':' plus ').replace(/−/g,lang==='zh'?' 减 ':' minus ').replace(/×/g,lang==='zh'?' 乘 ':' times ').replace(/÷/g,lang==='zh'?' 除以 ':' divided by ').replace(/=/g,lang==='zh'?' 等于 ':' equals ');
+ const t=lang==='zh'?`口诀：${math}。${s.why.zh} ${s.text.zh}`:`Formula: ${math}. ${s.why.en} ${s.text.en}`;speak(tryMode?T[lang].tryHelp:t);
+}
+function goStep(n,voice=true){if(tryMode)return;index=Math.min(steps.length-1,Math.max(0,n));render();if(voice&&$('autoVoice').checked)speakStep()}
+function autoPlay(){if(timer){stopPlay();return}if(tryMode||index>=steps.length-1)return;
+ const tick=()=>{timer=null;if(index<steps.length-1){goStep(index+1,true);if(index<steps.length-1){timer=setTimeout(tick,$('autoVoice').checked?3000:1050)}}render()};timer=setTimeout(tick,100);render()}
+function setQuestion(raw,voice=false){try{
+ const parsed=parseExpression(raw),newSteps=buildExpression(parsed);
+ question=parsed;steps=newSteps;index=0;earned=false;tryMode=false;tryDigits=digits(0);lastMove=null;stopPlay();
+ $('question').value=parsed.expression;$('error').textContent='';$('feedback').textContent='';$('feedback').classList.remove('bad');$('answerInput').value='';
+ render();if(voice&&$('autoVoice').checked)speakStep();return true;
+ }catch(e){$('error').textContent=T[lang][e.message]||T[lang].error;return false}}
+const ri=(a,b)=>a+Math.floor(Math.random()*(b-a+1)),pick=arr=>arr[ri(0,arr.length-1)];
+function makeRandom(count,lv){
+ let segments=[];
+ if(lv===1){let current=ri(1,8);segments.push(String(current));for(let i=1;i<count;i++){
+  const choices=[];for(let target=0;target<=9;target++){if(target===current)continue;
+    const b=Math.abs(target-current),op=target>current?'+':'-';
+    try{let st=buildSteps(current,op,b);if(st.every(s=>!['small','big'].includes(s.kind)))choices.push([op,b,target])}catch(_e){}
+  }
+  if(!choices.length)choices.push(['+',0,current]);const [op,b,target]=pick(choices);segments.push(`${op} ${b}`);current=target;
+ }}
+ if(lv===2){let current=ri(2,15);segments.push(String(current));for(let i=1;i<count;i++){
+  const add=Math.random()<.55||current<7, b=ri(1,9),op=add?'+':'-';
+  if(op==='-'&&current<b){segments.push(`+ ${b}`);current+=b}else{segments.push(`${op} ${b}`);current+=op==='+'?b:-b}
+  if(current>80&&i<count-1){segments.push('- 20');current-=20;i++}
+ }}
+ if(lv===3){let current=ri(20,800);segments.push(String(current));for(let i=1;i<count;i++){
+  const b=ri(10,Math.random()<.55?90:500),op=(Math.random()<.5||current<b)?'+':'-';
+  if(op==='+'&&current+b>99000){segments.push('- '+b);current-=b}else{segments.push(`${op} ${b}`);current+=op==='+'?b:-b}
+ }}
+ if(lv===4){
+  let current=0,used=0,paired=false;
+  while(used<count){
+   const remaining=count-used;
+   const pair=remaining>=2&&(!paired&&remaining===2||Math.random()<.28);
+   let term,termValue,units;
+   if(pair){const a=ri(2,12),b=ri(2,10),isMul=Math.random()<.55;
+     term=isMul?`${a} × ${b}`:`${a*b} ÷ ${b}`;termValue=isMul?a*b:a;units=2;paired=true;
+   }else{termValue=ri(2,18);term=String(termValue);units=1}
+   const op=used===0?'':current>=termValue&&Math.random()<.45?'−':'+';
+   segments.push(`${op} ${term}`.trim());current=used===0?termValue:current+(op==='+'?termValue:-termValue);
+   used+=units;
+  }
+ }
+
+ return segments.join(' ').replace(/^\s+/,'');
+}
+function newQuestion(){stopPlay();const count=Number($('termCount').value);for(let i=0;i<70;i++){
+ const expr=makeRandom(count,level);if(history.slice(-8).includes(expr))continue;
+ if(setQuestion(expr,false)){history.push(expr);if(history.length>75)history.shift();return}
+ }
+ $('error').textContent=T[lang].limit;
+}
+function enterMode(value){stopPlay();tryMode=value;lastMove=null;tryDigits=digits(0);$('answerInput').value='';$('feedback').textContent='';render()}
+function checkAnswer(){const raw=$('answerInput').value.trim();let n;
+ if(raw===''){if(!tryMode){$('feedback').textContent=T[lang].missing;$('feedback').classList.add('bad');return}n=readDigits(tryDigits)}
+ else n=Number(raw);
+ if(!Number.isInteger(n)||n<0){$('feedback').textContent=T[lang].missing;$('feedback').classList.add('bad');return}
+ const correct=n===question.answer;
+ $('feedback').classList.toggle('bad',!correct);
+ let msg=correct?(earned?T[lang].correctAgain:T[lang].correct):T[lang].wrong(n);
+ if(correct&&!earned){earned=true;stars++;try{localStorage.setItem('beadBuddyStarsV3',String(stars))}catch(_e){}$('stars').textContent='⭐ '+stars}
+ $('feedback').textContent=msg;if(correct)speak(msg);
+}
+function init(){setupBoard();
+ $('mathForm').addEventListener('submit',e=>{e.preventDefault();setQuestion($('question').value,true)});
+ $('randomBtn').addEventListener('click',newQuestion);
+ document.querySelectorAll('.level').forEach(el=>el.addEventListener('click',()=>{level=Number(el.dataset.level);newQuestion()}));
+ $('langEn').addEventListener('click',()=>{lang='en';window.speechSynthesis?.cancel();render()});$('langZh').addEventListener('click',()=>{lang='zh';window.speechSynthesis?.cancel();render()});
+ $('guideMode').addEventListener('click',()=>enterMode(false));$('tryMode').addEventListener('click',()=>enterMode(true));
+ $('prevBtn').addEventListener('click',()=>{stopPlay();goStep(index-1)});$('nextBtn').addEventListener('click',()=>{stopPlay();goStep(index+1)});
+ $('playBtn').addEventListener('click',autoPlay);$('voiceBtn').addEventListener('click',speakStep);
+ $('stepSlider').addEventListener('input',e=>{stopPlay();goStep(Number(e.target.value),false)});$('stepSlider').addEventListener('change',()=>{if($('autoVoice').checked)speakStep()});
+ $('checkBtn').addEventListener('click',checkAnswer);$('answerInput').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();checkAnswer()}});
+ $('revealBtn').addEventListener('click',()=>{stopPlay();tryMode=false;index=steps.length-1;render();$('feedback').classList.remove('bad');$('feedback').textContent=T[lang].revealText(question.answer)});
+ setQuestion('8 + 5 - 3 + 12 - 7',false);
+}
+init();
+window.BeadBuddyTest={buildSteps,buildGroups,parseExpression,buildExpression,makeRandom,setQuestion,newQuestion,readDigits,digits,getState:()=>({question,steps,index,level,tryMode,stars})};
 })();
+
 </script>
 </body>
 </html>
