@@ -1,26 +1,27 @@
-# Bead Buddy · 算盘小达人
+# Bead Buddy · 算盘小达人 v2.0
 
-A playful English / Mandarin abacus (Soroban) tutor for young children.
+A bilingual, interactive Soroban learning website for young children.
 
-## Open the website
-After GitHub Pages is enabled, the site is available at:
+## Open the app
 https://chowkuanlaw.github.io/beads-buddy/
 
-## Publish using GitHub Pages
-1. Make the repository **Public** if you want to use free public GitHub Pages hosting. Go to **Settings → General → Danger Zone → Change repository visibility**.
-2. Under **Settings → Pages**, set **Source** to **Deploy from a branch**.
-3. Choose **main** and **/(root)**, then **Save**.
-4. Find the live website address in **Settings → Pages**.
+## Four learning levels
+1. **First Beads:** Simple addition and subtraction (0–9, direct moves).
+2. **5 & 10 Friends:** Small-friend 5 and big-friend 10 formulas; carrying and borrowing.
+3. **Bigger Numbers:** Two- and three-digit addition and subtraction, showing each rod.
+4. **Times & Sharing:** Beginner multiplication through repeated addition and exact division through repeated subtraction; the final answer is shown on the abacus. This is a conceptual introduction, not the advanced formal Soroban multiplication/division algorithm.
 
 ## Features
-- Soroban with five rods and 25 beads embedded in HTML (beads remain visible without JavaScript).
-- Guided addition/subtraction, including small-friend (5) and big-friend (10) formulas.
-- Animated bead moves, step-by-step controls, and practice mode.
-- English and Mandarin speech synthesis using the device's installed voices.
-- Mobile-friendly, no backend, no analytics, no sign-in, no external runtime dependencies.
+- 25 HTML-rendered beads on five rods, even when JavaScript is disabled.
+- Animated step-by-step bead movements and displayed formulas.
+- English and Mandarin voice guidance (built-in browser/system speech synthesis).
+- Enter a custom question (+, −, × or ÷), select examples, or generate a new question.
+- Touch the beads in practice mode and earn stars for correctly solved questions.
+- Responsive for iPhone, iPad and desktop; no external APIs or analytics.
 
-Voice may differ between devices depending on the available browser/system voices. Interactive lessons require JavaScript in Safari or Chrome.
+## GitHub Pages
+Deploy from **main / (root)**. Static `index.html` and `.nojekyll`; no build step.
 
-## Technical
-A static `index.html` site. No build step or package installation needed.
+Supported inputs: non-negative addition/subtraction up to 9,999 operands; multiplication with operands 0–12; division of 0–144 with a divisor 1–12 and an integer quotient no higher than 12. No negative-number lessons or fractional division in this release.
 
+Voice playback depends on system-installed English/Chinese voices and generally needs a user interaction to begin on mobile.
