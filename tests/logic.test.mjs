@@ -1,10 +1,9 @@
-// Run: node tests/logic.test.mjs  (no dependencies; stubs the DOM and loads the inline script from index.html)
+// Run: node tests/logic.test.mjs  (no dependencies; stubs the DOM and loads app.js)
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 import assert from 'node:assert/strict';
 
-const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
-const src = html.match(/<script>([\s\S]*?)<\/script>/)[1];
+const src = readFileSync(new URL('../app.js', import.meta.url), 'utf8');
 
 const stub = () => new Proxy(function () {}, {
   get: (_t, k) => k === Symbol.iterator ? function* () {} : k === Symbol.toPrimitive ? () => '' : k === 'options' ? [] : stub(),
@@ -12,7 +11,7 @@ const stub = () => new Proxy(function () {}, {
   apply: () => stub(),
 });
 const win = {};
-const ctx = {window: win, document: {title: '', getElementById: stub, querySelector: stub, querySelectorAll: () => [], documentElement: stub()}, navigator: {language: 'en'}, localStorage: {getItem: () => null, setItem() {}}, setTimeout, clearTimeout, console};
+const ctx = {window: win, document: {title: '', getElementById: stub, querySelector: stub, querySelectorAll: () => [], documentElement: stub()}, navigator: {language: 'en'}, location: {protocol: 'file:'}, localStorage: {getItem: () => null, setItem() {}}, setTimeout, clearTimeout, console};
 win.window = win; Object.assign(ctx, {});
 vm.createContext(ctx);
 vm.runInContext(src, ctx);
