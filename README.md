@@ -1,4 +1,4 @@
-# Bead Buddy (v3.1)
+# Bead Buddy (v3.2)
 
 Live site: https://chowkuanlaw.github.io/beads-buddy/
 
@@ -23,3 +23,11 @@ Deploy the repository root `index.html` through GitHub Pages, branch `main`, fol
 ## Limits
 
 The five-rod Soroban represents whole numbers from 0–99,999, intermediate totals must be nonnegative, division must be exact, and multiplication/division equal-group demonstrations are limited to 12 groups. Parentheses are not yet supported.
+
+## v3.2 changes
+
+- Step slider hit area is no longer clipped; keyboard focus is visible.
+- Reveal no longer lets a child earn a point; `3 × 20` now works like `20 × 3`.
+- On-screen + − × ÷ keypad; language, level and numbers-per-question are remembered (language defaults from the browser).
+- Auto-play waits for narration to finish; bead and keypad labels follow the selected language; errors re-translate on language switch.
+- Wording now consistently says "Practice". Added favicon and `tests/logic.test.mjs` (`node tests/logic.test.mjs`).
