@@ -37,4 +37,5 @@ The five-rod Soroban represents whole numbers from 0–99,999, intermediate tota
 - On-screen + − × ÷ keypad; language, level and numbers-per-question are remembered (language defaults from the browser).
 - Auto-play waits for narration to finish; bead and keypad labels follow the selected language; errors re-translate on language switch.
 - Split into `index.html` / `styles.css` / `app.js`; simplified responsive CSS (page scrolls instead of height hacks); installable PWA with offline support.
+- Guide / Practice selector moved to the top and remembered across questions; one Voice on/off toggle replaces Auto voice + Hear; answer and question fields open the numeric keypad.
 - Wording now consistently says "Practice". Added favicon and `tests/logic.test.mjs` (`node tests/logic.test.mjs`).
