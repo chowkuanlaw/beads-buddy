@@ -1,5 +1,5 @@
 // Cache-first app shell; bump CACHE when files change so clients refresh.
-const CACHE='bead-buddy-v3.2';
+const CACHE='bead-buddy-v3.3';
 const ASSETS=['./','index.html','styles.css','app.js','manifest.webmanifest','icon.svg'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting()))});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});

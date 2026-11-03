@@ -37,3 +37,14 @@ button,input,select{font:inherit}button{cursor:pointer;touch-action:manipulation
 @media(max-width:490px){.brand small{font-size:8px;margin-top:3px;letter-spacing:.65px}.lang{padding:7px 8px;font-size:11px}.stars{margin-right:2px;padding-right:9px;gap:5px}.score-label{font-size:10px}.level{gap:4px}.question-row{gap:5px}.question-row .action{padding:0 10px}.label{font-size:10px}.random-controls .hint{display:none}.bead{width:clamp(29px,10vw,46px)}.bead-instruction{font-size:10px}.workspace{border-radius:9px}.guide-controls{gap:5px}.guide-controls .action{font-size:11px;gap:4px;padding:0 4px}.guide-controls .icon{width:14px;height:14px;flex-basis:14px}.practice-row .action{padding:0 9px}.tip{display:none}.expression{max-width:62%}}
 @media(max-width:390px){.brand{font-size:16px}.topactions{gap:3px}.lang{padding:5px 7px}.question-row .action{font-size:12px;padding:0 7px}.formula{font-size:19px}.level{padding:5px}.level-index{font-size:13px;min-width:17px}.level b{font-size:10px}.guide-controls .action{padding:0 3px}}
 @media(prefers-reduced-motion:reduce){.bead,.progress>div,.action,.level{transition:none!important}}
+
+/* Mascot */
+.feedback-row{display:flex;align-items:center;gap:10px;min-height:18px}.fb-col{min-width:0;flex:1;display:flex;flex-direction:column;gap:6px;align-items:flex-start}.mascot{width:76px;flex:0 0 76px}.mascot[hidden],.bubble[hidden]{display:none}.mascot-svg{display:block;width:100%;height:auto;overflow:visible}
+.mascot-svg .m-arm-up,.mascot-svg .m-mouth-happy{display:none}.mascot.happy .m-arm-up,.mascot.happy .m-mouth-happy{display:inline}.mascot.happy .m-arm-down,.mascot.happy .m-mouth-try{display:none}
+.bubble{position:relative;background:#fff;border:1.5px solid var(--wood-deep);border-radius:12px;padding:7px 12px;font-size:14px;font-weight:700;color:var(--ink)}.bubble:before{content:'';position:absolute;left:-7px;top:50%;width:11px;height:11px;background:#fff;border-left:1.5px solid var(--wood-deep);border-bottom:1.5px solid var(--wood-deep);transform:translateY(-50%) rotate(45deg)}
+.mascot.happy{animation:spinOut .9s cubic-bezier(.2,.8,.3,1) both}.mascot.try{animation:shake .5s ease both}.bubble.pop{animation:pop .35s cubic-bezier(.2,.9,.3,1.4) both}
+@keyframes spinOut{0%{transform:scale(.1) rotate(-540deg);opacity:0}60%{transform:scale(1.15) rotate(20deg);opacity:1}80%{transform:scale(.96) rotate(-6deg)}100%{transform:scale(1) rotate(0)}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px) rotate(-4deg)}40%{transform:translateX(6px) rotate(4deg)}60%{transform:translateX(-4px)}80%{transform:translateX(3px)}}
+@keyframes pop{from{transform:scale(.3);opacity:0;transform-origin:left center}to{transform:scale(1);opacity:1}}
+@media(prefers-reduced-motion:reduce){.mascot.happy,.mascot.try,.bubble.pop{animation:none}}
+@media(max-width:490px){.mascot{width:64px;flex-basis:64px}.bubble{font-size:13px}}
